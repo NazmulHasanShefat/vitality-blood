@@ -18,6 +18,7 @@ export const auth = betterAuth({
   user: {
     additionalFields: {
       role: {
+        type: "string",
         default: "donor",
       },
       status: {
@@ -35,5 +36,5 @@ export const auth = betterAuth({
     },
   },
 
-  plugins: [admin()],
+//   plugins: [admin()],
 });

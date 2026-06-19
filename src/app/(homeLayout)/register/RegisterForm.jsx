@@ -1,6 +1,7 @@
 "use client";
 
-import { authClient } from "@/lib/auth-client";
+import { authClient, signUp } from "@/lib/auth-client";
+import { uploadImage } from "@/lib/uploads/imageUpload";
 import React, { useState } from "react";
 import {
   FiUser,
@@ -25,7 +26,7 @@ const RegisterForm = () => {
     confirmPassword: "",
   });
 
-  const [avatarUrl, setAvatarUrl] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState("fdsa");
   const [uploading, setUploading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -629,16 +630,18 @@ const RegisterForm = () => {
     imageFormData.append("image", file);
 
     try {
-      const IMGBB_API_KEY = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
-      const response = await fetch(
-        `https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`,
-        {
-          method: "POST",
-          body: imageFormData,
-        },
-      );
+    //   const IMGBB_API_KEY = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
+    //   const response = await fetch(
+    //     `https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`,
+    //     {
+    //       method: "POST",
+    //       body: imageFormData,
+    //     },
+    //   );
 
-      const data = await response.json();
+    //   const data = await response.json();
+    const data = await uploadImage(imageFormData);
+    console.log(data)
       if (data.success) {
         setAvatarUrl(data.data.url);
         setSuccess("Avatar uploaded successfully!");
@@ -667,9 +670,10 @@ const RegisterForm = () => {
       return;
     }
 
-    const { data, error } = await authClient.signUp.email({
+    const { data, error } = await signUp.email({
       ...formData,
       image: avatarUrl,
+      role: "donor",
       status: "active",
     });
     if(error){
