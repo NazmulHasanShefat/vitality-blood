@@ -1,13 +1,16 @@
 "use client";
 
+import { signIn } from "@/lib/auth-client";
+import { toast } from "@heroui/react";
+import Link from "next/link";
 import React, { useState } from "react";
 import { FiMail, FiLock, FiEye, FiEyeOff, FiLogIn } from "react-icons/fi";
 
 export default function Login() {
-  // পাসওয়ার্ড শো/হাইড করার জন্য শুধু এই স্টেটটি রাখা হয়েছে (ইনপুট ডাটার জন্য কোনো স্টেট নেই)
+
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // FormData অবজেক্ট তৈরি (e.currentTarget ব্যবহার করে সরাসরি ফর্মের ডাটা নেওয়া হয়েছে)
@@ -17,6 +20,17 @@ export default function Login() {
     const loginData = Object.fromEntries(formDataInstance.entries());
 
     // এখানে আপনার সাবমিট করা ডাটা অবজেক্ট আকারে পেয়ে যাবেন
+    const {data , error} = await signIn.email({
+      ...loginData,
+      callbackURL: "/",
+    })
+    if(error){
+      alert(error.message)
+    }
+    if(data){
+      toast.success("login successfull")
+   
+    }
     console.log("Submitted Login Data:", loginData);
 
     // আপনার API কল বা লগইন লজিক এখানে যুক্ত করতে পারেন:
@@ -128,12 +142,12 @@ export default function Login() {
         {/* রেজিস্টার পেজের লিঙ্ক */}
         <div className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
           {"        Don't have an account?"}
-          <a
-            href="#"
+          <Link
+            href="/register"
             className="font-semibold text-[#b91c1c] dark:text-[#ef4444] hover:underline"
           >
             Register here
-          </a>
+          </Link>
         </div>
       </div>
     </div>

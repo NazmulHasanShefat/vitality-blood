@@ -2,6 +2,8 @@
 
 import { authClient, signUp } from "@/lib/auth-client";
 import { uploadImage } from "@/lib/uploads/imageUpload";
+import { toast } from "@heroui/react";
+import Link from "next/link";
 import React, { useState } from "react";
 import {
   FiUser,
@@ -675,11 +677,13 @@ const RegisterForm = () => {
       image: avatarUrl,
       role: "donor",
       status: "active",
+      callbackURL: "/login"
     });
     if(error){
         console.log("there is some error",error)
     }
     if(data){
+      toast.success("registed successfully please login")
         console.log("submited successfullt",data)
     }
 
@@ -948,6 +952,10 @@ const RegisterForm = () => {
             {uploading ? "Processing Image..." : "Register Now"}
           </button>
         </div>
+        <p>
+          Alrady I have an acount 
+        <Link href={`/login`} className="px-3 underline text-red-600">Login</Link>
+        </p>
       </form>
     </>
   );
