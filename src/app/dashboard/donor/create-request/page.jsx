@@ -6,7 +6,6 @@ const page = async () => {
     const user = await getUserSession()
     return (
         <div>
-            this is my requ7est
             <CreateDonationRequest user={user}/>
         </div>
     );

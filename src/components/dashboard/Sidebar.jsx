@@ -31,8 +31,8 @@ export default function Sidebar({user}) {
     if (user?.role === "donor") {
       return [
         { name: "Dashboard", href: "/dashboard/donor", icon: FiGrid },
-        { name: "create request", href: "/dashboard/donor/myrequest", icon: FiUsers },
-        // { name: "create request", href: "/donors/donor/myrequest", icon: FiUsers },
+        { name: "my request", href: "/dashboard/donor/my-requests", icon: FiUsers },
+        { name: "create request", href: "/dashboard/donor/create-request", icon: FiUsers },
       ];
     } else {
       return [

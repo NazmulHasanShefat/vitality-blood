@@ -15,3 +15,12 @@ export const serverMutaion = async (apiPath, formData, actionMethod = "POST") =>
         console.log(error)
     }
 }
+
+export const serverFetch = async (apiUrl)=>{
+    try {
+        const res = await fetch(`${baseUrl}${apiUrl}`);
+        return res.json();
+    } catch (error) {
+        console.log(error)
+    }
+}
