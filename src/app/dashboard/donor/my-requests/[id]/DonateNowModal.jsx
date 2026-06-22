@@ -2,9 +2,11 @@
 
 import React from "react";
 import { FiUser, FiMail, FiHeart } from "react-icons/fi";
-import { Button, Modal, TextField, Label, Input } from "@heroui/react";
+import { Button, Modal, TextField, Label, Input, toast } from "@heroui/react";
+import { updateDonationStatus } from "@/lib/actions/donationRequest";
+import { redirect } from "next/navigation";
 
-export default function DonateNowModal({user}) {
+export default function DonateNowModal({user, requestDetails}) {
   // Simulated logged-in user context data structure (Can be replaced with Auth hooks)
   const loggedInUser = {
     name: user?.name,
@@ -12,14 +14,20 @@ export default function DonateNowModal({user}) {
   };
 
   // Process data extraction dynamically via FormData upon confirming the modal action
-  const handleConfirmSubmit = (e) => {
+  const handleConfirmSubmit = async (e) => {
     e.preventDefault();
 
     const formDataInstance = new FormData(e.currentTarget);
     const donorPayload = Object.fromEntries(formDataInstance.entries());
 
     // Logging the dynamic form entries exactly as requested
-    console.log("Confirmed Donation Inputs Details:", donorPayload);
+    const result = await updateDonationStatus({status: "inprogress", ...donorPayload}, requestDetails?._id);
+    // console.log("Confirmed Donation Inputs Details:", donorPayload);
+    if(result.modifiedCount > 0){
+      toast.success("Donation updated successfully")
+      redirect("/dashboard/donor/my-requests")
+    }
+    console.log("Confirmed Donation Inputs Details:", result);
   };
 
   return (
@@ -56,7 +64,7 @@ export default function DonateNowModal({user}) {
 
             {/* Interactive Data Entry Form */}
             <form onSubmit={handleConfirmSubmit}>
-              <Modal.Body className="px-8 py-4 space-y-5">
+              <Modal.Body className=" py-4 space-y-5">
                 
                 {/* Input Payload Scope 1: Donor Full Name using HeroUI TextField Structure */}
                 <TextField isReadOnly defaultValue={loggedInUser.name} className="w-full text-left space-y-1.5" name="donorName" type="text">
@@ -91,7 +99,7 @@ export default function DonateNowModal({user}) {
               </Modal.Body>
 
               {/* Action Buttons Interface Layout Footer Group Block */}
-              <Modal.Footer className=" py-6 mt-4 border-t border-slate-100 dark:border-slate-800/80 bg-slate-50/30 dark:bg-slate-900/30 flex items-center justify-end gap-3">
+              <Modal.Footer className="mt-4 border-slate-100 dark:border-slate-800/80 bg-slate-50/30 dark:bg-slate-900/30 flex items-center justify-end gap-3">
                 <Button
                   type="button"
                   slot="close"

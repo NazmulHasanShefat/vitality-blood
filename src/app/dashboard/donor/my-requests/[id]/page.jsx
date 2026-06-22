@@ -57,11 +57,11 @@ export default async function DonationRequestDetails({ params }) {
               {/* Status Indicator Tag matching specific dynamic constraints */}
               <div className="shrink-0">
                 <span
-                  className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-white/50 tracking-wider border ${
+                  className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-white tracking-wider border ${
                     requestDetails.donationStatus === "pending"
-                      ? "bg-amber-500/10 text-amber-300 border-amber-500/20"
+                      ? "bg-amber-500/10 text-amber-600 border-amber-600"
                       : requestDetails.donationStatus === "inprogress"
-                        ? "bg-blue-500/10 text-blue-300 border-blue-500/20"
+                        ? "bg-blue-500/10 text-purple-500 border-purple-500"
                         : requestDetails.donationStatus === "done"
                           ? "bg-emerald-500/10 text-emerald-300 border-emerald-500/20"
                           : "bg-gray-500/10 text-gray-400 border-gray-500/20"
@@ -200,7 +200,7 @@ export default async function DonationRequestDetails({ params }) {
               <FiHeart className="text-base fill-current" />
               Donate now
             </button> */}
-            <DonateNowModal user={user}/>
+            <DonateNowModal user={user} requestDetails={requestDetails}/>
           </div>
         </div>
       </div>

@@ -192,7 +192,7 @@ export default function DonationRequestTable({ donorRequests }) {
                                 ? "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/30 dark:text-blue-400 dark:border-blue-900/30"
                                 : request.donationStatus === "done"
                                   ? "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-900/30"
-                                  : "bg-gray-50 text-gray-600 border-gray-200 dark:bg-gray-800/40 dark:text-gray-400 dark:border-gray-700"
+                                  : "bg-red-100 text-red-600 border-red-200 dark:bg-gray-800/40 dark:text-gray-400 dark:border-gray-700"
                           }`}
                         >
                           {request.donationStatus}
@@ -202,37 +202,13 @@ export default function DonationRequestTable({ donorRequests }) {
                       {/* Operations Interaction Action Layout Buttons Field Cells */}
                       <td className="py-4 px-6 text-center">
                         <div className="flex items-center justify-center gap-2.5">
-                          {/* Dynamic Functional Conditional Logic Buttons: Appears Only On In-Progress Scopes */}
-                          {request.donationStatus === "inprogress" && (
-                            <>
-                              <button
-                                type="button"
-                                title="Mark as Done"
-                                onClick={() =>
-                                  handleStatusChange(requestId, "done")
-                                }
-                                className="p-1.5 bg-emerald-50 text-emerald-600 border border-emerald-100 hover:bg-emerald-600 hover:text-white rounded-lg transition dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-900/30 dark:hover:bg-emerald-600 dark:hover:text-white"
-                              >
-                                Done
-                              </button>
-                              <button
-                                type="button"
-                                title="Cancel Request"
-                                onClick={() =>
-                                  handleStatusChange(requestId, "canceled")
-                                }
-                                className="p-1.5 bg-red-50 text-[#b91c1c] border border-red-100 hover:bg-[#b91c1c] hover:text-white rounded-lg transition dark:bg-red-950/30 dark:text-[#f87171] dark:border-red-900/30 dark:hover:bg-[#b91c1c] dark:hover:text-white"
-                              >
-                                <FiX className="text-base" />
-                              </button>
-                            </>
-                          )}
+                         
 
                           {/* Base Utilities Action Links Wrapper Buttons */}
 
-                          <OptionsDrop requestId={requestId} />
+                          <OptionsDrop requestId={requestId} request={request}/>
 
-                          <DeleteConfirmModal />
+                          <DeleteConfirmModal requestId={requestId}/>
                         </div>
                       </td>
                     </tr>

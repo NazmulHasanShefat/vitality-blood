@@ -1,9 +1,15 @@
 "use client";
 
+import { deleteDonationRequest } from "@/lib/actions/donationRequest";
 import {Button, Modal} from "@heroui/react";
 import { FiTrash2 } from "react-icons/fi";
 
-const DeleteConfirmModal = () => {
+const DeleteConfirmModal = ({requestId}) => {
+  const handleDelete = async ()=>{
+    const result = await deleteDonationRequest(requestId);
+    console.log(result)
+    // console.log("hello")
+  }
     return (
          <Modal>
           <Button variant="primary" className={`p-0 py-0 my-0 h-max bg-transparent`}> <FiTrash2 color="black" className="text-sm" /></Button>
@@ -25,7 +31,7 @@ const DeleteConfirmModal = () => {
                   <Button slot="close" variant="secondary" className={`text-gray-400`}>
                     Cancel
                   </Button>
-                  <Button slot="close" className={`bg-red-700 text-white`}>Confirm</Button>
+                  <Button onClick={handleDelete} className={`bg-red-700 text-white`}>Confirm</Button>
                 </Modal.Footer>
               </Modal.Dialog>
             </Modal.Container>

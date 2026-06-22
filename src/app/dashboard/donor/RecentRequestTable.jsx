@@ -19,33 +19,9 @@ import DeleteConfirmModal from "./my-requests/DeleteConfirmModal";
 
 export default function RecentDonationRequestTable({ donorRequests }) {
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedRequestId, setSelectedRequestId] = useState(null);
 
-  // Status mutation updates controller logic
-  const handleStatusChange = (id, newStatus) => {
-    setRequests((prev) =>
-      prev.map((req) =>
-        req._id.$oid === id ? { ...req, donationStatus: newStatus } : req,
-      ),
-    );
-    // In production, integrate database API trigger here: axios.patch(`/api/requests/${id}`, { donationStatus: newStatus })
-  };
 
-  // Safe delete triggers sequence
-  const openDeleteModal = (id) => {
-    setSelectedRequestId(id);
-    setIsModalOpen(true);
-  };
 
-  const confirmDelete = () => {
-    setRequests((prev) =>
-      prev.filter((req) => req._id.$oid !== selectedRequestId),
-    );
-    setIsModalOpen(false);
-    setSelectedRequestId(null);
-    // In production, trigger endpoint mutation here: axios.delete(`/api/requests/${id}`)
-  };
 
   return (
     <div className="w-full bg-slate-50 dark:bg-[#0b0f19] py-8 px-4 sm:px-6 lg:px-8 min-h-screen transition-colors duration-300">
@@ -123,7 +99,7 @@ export default function RecentDonationRequestTable({ donorRequests }) {
                         </div>
                       </td>
 
-                      {/* Donor Information Node (Conditional Block Logic Execution Area) */}
+                           {/* Donor Information Node (Conditional Block Logic Execution Area) */}
                       <td className="py-4 px-6">
                         {request.donationStatus === "inprogress" &&
                         request.donorInfo ? (
@@ -159,39 +135,17 @@ export default function RecentDonationRequestTable({ donorRequests }) {
                           {request.donationStatus}
                         </span>
                       </td>
+                 
 
                       {/* Operations Interaction Action Layout Buttons Field Cells */}
                       <td className="py-4 px-6 text-center">
                         <div className="flex items-center justify-center gap-2.5">
                           {/* Dynamic Functional Conditional Logic Buttons: Appears Only On In-Progress Scopes */}
-                          {request.donationStatus === "inprogress" && (
-                            <>
-                              <button
-                                type="button"
-                                title="Mark as Done"
-                                onClick={() =>
-                                  handleStatusChange(requestId, "done")
-                                }
-                                className="p-1.5 bg-emerald-50 text-emerald-600 border border-emerald-100 hover:bg-emerald-600 hover:text-white rounded-lg transition dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-900/30 dark:hover:bg-emerald-600 dark:hover:text-white"
-                              >
-                                Done
-                              </button>
-                              <button
-                                type="button"
-                                title="Cancel Request"
-                                onClick={() =>
-                                  handleStatusChange(requestId, "canceled")
-                                }
-                                className="p-1.5 bg-red-50 text-[#b91c1c] border border-red-100 hover:bg-[#b91c1c] hover:text-white rounded-lg transition dark:bg-red-950/30 dark:text-[#f87171] dark:border-red-900/30 dark:hover:bg-[#b91c1c] dark:hover:text-white"
-                              >
-                                <FiX className="text-base" />
-                              </button>
-                            </>
-                          )}
+                  
 
                           {/* Base Utilities Action Links Wrapper Buttons */}
 
-                          <OptionsDrop requestId={requestId} />
+                          <OptionsDrop requestId={requestId} request={request}/>
 
                           <DeleteConfirmModal />
                         </div>
@@ -206,38 +160,7 @@ export default function RecentDonationRequestTable({ donorRequests }) {
       </div>
 
       {/* Confirmation Safe Interceptor Modal Overlay Layer Layout */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fadeIn">
-          <div className="bg-white dark:bg-[#111827] max-w-sm w-full rounded-2xl p-6 shadow-2xl border border-gray-100 dark:border-gray-800 text-center animate-scaleIn">
-            <div className="h-12 w-12 rounded-full bg-red-50 dark:bg-red-950/30 text-[#b91c1c] dark:text-[#f87171] flex items-center justify-center mx-auto text-2xl mb-4">
-              <FiTrash2 />
-            </div>
-            <h3 className="text-lg font-bold text-gray-900 dark:text-slate-200">
-              Delete Donation Request?
-            </h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-              Are you sure you want to delete this donation request tracking
-              file permanently? This mutation can not be undone.
-            </p>
-            <div className="mt-6 flex items-center justify-center gap-3">
-              <button
-                type="button"
-                onClick={() => setIsModalOpen(false)}
-                className="px-4 py-2 text-sm font-semibold bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200 rounded-xl transition"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                onClick={confirmDelete}
-                className="px-5 py-2 text-sm font-semibold bg-[#b91c1c] hover:bg-[#991b1b] text-white rounded-xl transition shadow-md shadow-red-900/10"
-              >
-                Confirm Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+    
     </div>
   );
 }
