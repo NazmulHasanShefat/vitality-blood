@@ -12,13 +12,14 @@ import {
   FiHeart,
 } from "react-icons/fi";
 import DonateNowModal from "./DonateNowModal";
+import { getUserSession } from "@/lib/api/user";
 
 export default async function DonationRequestDetails({ params }) {
   const { id } = await params;
   console.log(id);
   // Mocking the data fetched via API based on your exact MongoDB document structure
   const requestDetails = await getDonationDetails(id);
-
+  const user = await getUserSession();
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#0b0f19] text-[#0f172a] dark:text-[#f8fafc] py-10 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
       <div className="max-w-4xl mx-auto">
@@ -134,7 +135,7 @@ export default async function DonationRequestDetails({ params }) {
                     </span>
                   </p>
                   <p className="text-xs text-gray-400 dark:text-gray-500 font-mono truncate">
-                    ID: {requestDetails.requesterId}
+                    Email: {requestDetails?.requesterEmail}
                   </p>
                 </div>
               </div>
@@ -199,7 +200,7 @@ export default async function DonationRequestDetails({ params }) {
               <FiHeart className="text-base fill-current" />
               Donate now
             </button> */}
-            <DonateNowModal />
+            <DonateNowModal user={user}/>
           </div>
         </div>
       </div>

@@ -61,7 +61,7 @@ export default function Sidebar({user}) {
 
       <div className="flex flex-col space-y-6">
      
-        <div className="flex items-center space-x-3 px-2">
+        <Link href={`/`} className="flex items-center space-x-3 px-2">
           <div className="h-9 w-9 rounded-xl bg-[#b91c1c] flex items-center justify-center shadow-md shadow-red-600/10 text-white font-bold text-lg">
             <FiDroplet className="fill-current text-white text-base" />
           </div>
@@ -73,7 +73,7 @@ export default function Sidebar({user}) {
               Clinical Admin
             </span>
           </div>
-        </div>
+        </Link>
 
         {/* রেজিস্টার ডোনার বাটন (ছবির মতন রেড ব্যাকগ্রাউন্ড ও প্লাস আইকন) */}
         <button

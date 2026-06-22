@@ -1,9 +1,9 @@
 "use client";
-
 import { Button, Dropdown, Label } from "@heroui/react";
-import Link from "next/link";
 import { FiEdit2, FiEye, FiTrash2 } from "react-icons/fi";
 import { TbTableOptions } from "react-icons/tb";
+import DeleteConfirmModal from "./DeleteConfirmModal";
+
 
 export function OptionsDrop({ requestId }) {
   return (
@@ -25,15 +25,7 @@ export function OptionsDrop({ requestId }) {
             <FiEdit2 className="text-sm" />
             Edit Details
           </Dropdown.Item>
-          <Dropdown.Item
-            id="delete-file"
-            textValue="Delete file"
-            variant="danger"
-            className="text-red-500"
-          >
-            <FiTrash2 className="text-sm" />
-            Delete file
-          </Dropdown.Item>
+        
         </Dropdown.Menu>
       </Dropdown.Popover>
     </Dropdown>

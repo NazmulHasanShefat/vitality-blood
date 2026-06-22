@@ -4,11 +4,11 @@ import React from "react";
 import { FiUser, FiMail, FiHeart } from "react-icons/fi";
 import { Button, Modal, TextField, Label, Input } from "@heroui/react";
 
-export default function DonateNowModal() {
+export default function DonateNowModal({user}) {
   // Simulated logged-in user context data structure (Can be replaced with Auth hooks)
   const loggedInUser = {
-    name: "Asif Rahman",
-    email: "asif.donor@gmail.com",
+    name: user?.name,
+    email: user?.email,
   };
 
   // Process data extraction dynamically via FormData upon confirming the modal action

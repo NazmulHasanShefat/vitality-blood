@@ -19,14 +19,14 @@ export default function Navbar() {
     if (!data) {
       return [
         { name: "Search Donor", href: "/searchdonor" },
-        { name: "Donation Requiest", href: "/donation-request" },
+        { name: "Donation Requiest", href: "/donation-requests" },
         { name: "login", href: "/login" },
         { name: "Home", href: "/" },
       ];
     } else {
       return [
         { name: "Search Donor", href: "/searchdonor" },
-        { name: "Donation Requiest", href: "/donation-request" },
+        { name: "Donation Requiest", href: "/donation-requests" },
         { name: "Home", href: "/" },
       ];
     }

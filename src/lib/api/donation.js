@@ -16,3 +16,10 @@ export const getDonationDetails = async (requestId)=>{
         console.log(error)
     }
 }
+export const getRecentDonorDonationRequest = async (requesterId)=>{
+      try {
+        return await serverFetch(`/api/get-recent-donor-request/${requesterId}`);
+    } catch (error) {
+        console.log(error)
+    }
+}

@@ -1,5 +1,8 @@
 "use client";
 
+import { updateDonationRequest } from "@/lib/actions/donationRequest";
+import { toast } from "@heroui/react";
+import { redirect } from "next/navigation";
 import React, { useState } from "react";
 import {
   FiUser,
@@ -29,28 +32,22 @@ const upazilas = {
   Mymensingh: ["Mymensingh Sadar", "Trishal"],
 };
 
-export default function DonationRequestEditForm() {
-  const [formData] = useState({
-    recipientName: "Ananniya",
-    bloodGroup: "O+",
-    recipientDistrict: "Dhaka",
-    recipientUpazila: "Uttara",
-    hospitalName: "PJ bonshi hospital",
-    fullAddress: "PJ bonshi hospital 10 no road mirpur Dhaka",
-    donationDate: "2026-07-02",
-    donationTime: "12:18",
-    requestMessage:
-      "Blood is needed for an urgent baby delivery operation, as the mother may require transfusion during or after delivery for safety.",
-    requesterName: "Wonda",
-    requesterEmail: "wonda@example.com",
-  });
+export default function DonationRequestEditForm({donationDetails, user}) {
+  const formData ={...donationDetails}
 
   const [selectedDistrict, setSelectedDistrict] = useState(formData.recipientDistrict);
 
-  const handleUpdateSubmit = (e) => {
+  const handleUpdateSubmit = async (e) => {
     e.preventDefault();
     const formEntries = new FormData(e.currentTarget);
     const updatedPayload = Object.fromEntries(formEntries.entries());
+    const filterId = donationDetails?._id;
+    const result = await updateDonationRequest(updatedPayload, filterId);
+    console.log(result, "this is submition result")
+    if(result.matchedCount){
+      toast.success("request updated successfully");
+      redirect("/dashboard/donor/my-requests")
+    }
     console.log("Updated Payload:", updatedPayload);
   };
 
@@ -114,7 +111,7 @@ export default function DonationRequestEditForm() {
                   <FiMail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
                   <input
                     type="email"
-                    value={formData.requesterEmail}
+                    value={user?.email}
                     disabled
                     className={disabledInputClass}
                   />

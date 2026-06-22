@@ -13,51 +13,12 @@ import {
   FiClock,
   FiUser,
 } from "react-icons/fi";
-import { OptionsDrop } from "./OptionsDropDown";
-import DeleteConfirmModal from "./DeleteConfirmModal";
+import { OptionsDrop } from "./my-requests/OptionsDropDown";
+import DeleteConfirmModal from "./my-requests/DeleteConfirmModal";
 
-export default function DonationRequestTable({ donorRequests }) {
-  // Mock dataset structured exactly according to your provided database document schema
-  const [requests, setRequests] = useState([
-    {
-      _id: { $oid: "6a379d5f8fa67e2fa90588c1" },
-      recipientName: "Rahim Uddin",
-      bloodGroup: "B+",
-      recipientDistrict: "Dhaka",
-      recipientUpazila: "Gulshan",
-      hospitalName: "United Hospital",
-      fullAddress: "Plot 15, Road 71, Gulshan 2",
-      donationDate: "2026-07-09",
-      donationTime: "19:14",
-      requestMessage: "Emergency surgery require blood immediately.",
-      requesterName: "Karim Ahmed",
-      requesterId: "6a362d03117538b7b86333ee",
-      donationStatus: "inprogress", // Can be pending, inprogress, done, or canceled
-      donorInfo: {
-        name: "Asif Rahman",
-        email: "asif.donor@gmail.com",
-      },
-      createdAt: { $date: "2026-06-21T08:14:23.783Z" },
-    },
-    {
-      _id: { $oid: "6a379d5f8fa67e2fa90588c2" },
-      recipientName: "Sultana Razia",
-      bloodGroup: "O-",
-      recipientDistrict: "Dhaka",
-      recipientUpazila: "Mirpur",
-      hospitalName: "Dhaka Medical College",
-      fullAddress: "Zahir Raihan Rd, Dhaka",
-      donationDate: "2026-06-28",
-      donationTime: "11:00",
-      requestMessage: "Thalassemia patient regular transfusion.",
-      requesterName: "Nigar Sultana",
-      requesterId: "6a362d03117538b7b86333ff",
-      donationStatus: "pending",
-      createdAt: { $date: "2026-06-21T09:30:00.000Z" },
-    },
-  ]);
 
-  // Modal control states for handling deletions safely
+export default function RecentDonationRequestTable({ donorRequests }) {
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRequestId, setSelectedRequestId] = useState(null);
 
@@ -95,7 +56,7 @@ export default function DonationRequestTable({ donorRequests }) {
           <div className="p-6 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center">
             <div>
               <h2 className="text-xl font-bold text-gray-900 dark:text-slate-100">
-                Blood Donation Requests
+               Recent Blood Donation Requests
               </h2>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                 Manage, monitor, and process active emergency blood requests.
