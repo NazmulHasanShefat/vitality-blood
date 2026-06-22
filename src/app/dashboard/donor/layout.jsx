@@ -8,7 +8,7 @@ const DonorDashboardlayout = async ({ children }) => {
   return (
     <div className="flex">
       <Sidebar user={user}/>
-      <div className="w-full flex-1 lg:ml-50">
+      <div className="w-full flex-1 lg:ml-50 overflow-x-hidden">
         <DashboardNavbar />
         {children}
       </div>
