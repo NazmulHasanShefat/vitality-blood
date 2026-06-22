@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import React, { useState } from "react";
 import { 
   FiEdit2, 
@@ -12,8 +13,9 @@ import {
   FiClock, 
   FiUser 
 } from "react-icons/fi";
+import { OptionsDrop } from "./OptionsDropDown";
 
-export default function DonationRequestTable() {
+export default function DonationRequestTable({donorRequests}) {
   // Mock dataset structured exactly according to your provided database document schema
   const [requests, setRequests] = useState([
     {
@@ -111,8 +113,8 @@ export default function DonationRequestTable() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-gray-800/60 text-sm">
-                {requests.map((request) => {
-                  const requestId = request._id.$oid;
+                {donorRequests.map((request) => {
+                  const requestId = request?._id;
                   return (
                     <tr key={requestId} className="hover:bg-slate-50/50 dark:hover:bg-[#1e293b]/20 transition duration-150">
                       
@@ -189,7 +191,7 @@ export default function DonationRequestTable() {
                                 onClick={() => handleStatusChange(requestId, "done")}
                                 className="p-1.5 bg-emerald-50 text-emerald-600 border border-emerald-100 hover:bg-emerald-600 hover:text-white rounded-lg transition dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-900/30 dark:hover:bg-emerald-600 dark:hover:text-white"
                               >
-                                <FiCheck className="text-base" />
+                              Done
                               </button>
                               <button
                                 type="button"
@@ -203,14 +205,9 @@ export default function DonationRequestTable() {
                           )}
 
                           {/* Base Utilities Action Links Wrapper Buttons */}
-                          <button
-                            type="button"
-                            title="View Details"
-                            onClick={() => window.location.href = `/dashboard/donation-request-details/${requestId}`}
-                            className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950/30 rounded-xl transition"
-                          >
-                            <FiEye className="text-base" />
-                          </button>
+                       
+
+                          <OptionsDrop requestId={requestId}/>
                           
                           <button
                             type="button"

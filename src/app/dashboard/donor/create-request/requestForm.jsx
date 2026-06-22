@@ -1,6 +1,7 @@
 "use client";
 
 import { createDonationRequest } from "@/lib/actions/donationRequest";
+import { toast } from "@heroui/react";
 import React, { useState } from "react";
 import { 
   FiUser, 
@@ -51,13 +52,9 @@ export default function CreateDonationRequest({user}) {
     };
 
     const result = await createDonationRequest(finalizedDonationRequest)
-    console.log(result, "this is post result")
-
-    // Ready to be forwarded safely over an external API node configuration endpoint
-    console.log("Created Donation Request Payload Structure:", finalizedDonationRequest);
-    
-    // Example database pipeline push mechanism wrapper:
-    // fetch('/api/requests/create', { method: 'POST', body: JSON.stringify(finalizedDonationRequest) })
+    if(result.insertedId){
+      toast.success("Request created successfully")
+    }
   };
 
   return (

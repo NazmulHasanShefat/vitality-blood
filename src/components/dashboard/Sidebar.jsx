@@ -14,6 +14,8 @@ import {
   FiHelpCircle,
   FiPlusCircle,
 } from "react-icons/fi";
+import { HiOutlineLogout } from "react-icons/hi";
+import { FaRegUser } from "react-icons/fa";
 
 export default function Sidebar({user}) {
   const pathname = usePathname(); // অ্যাক্টিভ রুট ট্র্যাক করার জন্য (Next.js এনভায়রনমেন্ট)
@@ -33,6 +35,7 @@ export default function Sidebar({user}) {
         { name: "Dashboard", href: "/dashboard/donor", icon: FiGrid },
         { name: "my request", href: "/dashboard/donor/my-requests", icon: FiUsers },
         { name: "create request", href: "/dashboard/donor/create-request", icon: FiUsers },
+        { name: "Profile", href: "/dashboard/donor/profile", icon: FaRegUser },
       ];
     } else {
       return [
@@ -46,18 +49,18 @@ export default function Sidebar({user}) {
     }
   };
 
-  // বটম ইউটিলিটি আইটেমস
+
     const menuItems = getNavItem();
   const bottomItems = [
     { name: "Settings", href: "/settings", icon: FiSettings },
-    { name: "Support", href: "/support", icon: FiHelpCircle },
+    { name: "Logout", href: "/support", icon: HiOutlineLogout },
   ];
 
   return (
     <aside className="w-50 hidden lg:flex h-screen bg-white border-r border-gray-100  flex-col justify-between p-4 dark:bg-[#111827] dark:border-gray-800 transition-colors duration-300 fixed left-0 top-0 z-40">
-      {/* টপ সেকশন: লোগো এবং অ্যাকশন বাটন */}
+
       <div className="flex flex-col space-y-6">
-        {/* ব্র্যান্ড লোগো এবং হেডার (ছবির মতন আইকন বক্স সহ) */}
+     
         <div className="flex items-center space-x-3 px-2">
           <div className="h-9 w-9 rounded-xl bg-[#b91c1c] flex items-center justify-center shadow-md shadow-red-600/10 text-white font-bold text-lg">
             <FiDroplet className="fill-current text-white text-base" />

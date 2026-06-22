@@ -66,7 +66,7 @@ export default function ProfileCard() {
               </div>
               {/* Text Layout Metadata */}
               <div className="text-center sm:text-left mb-2">
-                <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-slate-100">
+                <h1 className="text-2xl mb-7 text-white font-bold tracking-tight dark:text-slate-100">
                   {userData.name}
                 </h1>
                 <span className="inline-block mt-1.5 px-3 py-0.5 text-xs font-bold uppercase tracking-wider bg-red-50 dark:bg-red-950/40 text-[#b91c1c] dark:text-[#f87171] rounded-full">
