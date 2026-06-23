@@ -61,6 +61,7 @@ export default function Sidebar({ user }) {
         },
         { name: "Profile", href: "/dashboard/admin/profile", icon: FaRegUser },
         { name: "All users", href: "/dashboard/admin/all-users", icon: FaRegUser },
+        { name: "All donation request", href: "/dashboard/admin/all-donation-requests", icon: FaRegUser },
       ];
     } else {
       return [

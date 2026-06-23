@@ -686,28 +686,16 @@ const RegisterForm = () => {
         bloodGroup: formData.bloodGroup,
         district: formData.district,
         upazila: formData.upazila,
-
       }
     });
-
-    console.log({
-      email: formData.email,
-      name: formData.name,
-      role: "donor",
-      image: avatarUrl,
-      password: formData.password,
-      status: "active",
-      bloodGroup: formData.bloodGroup,
-      district: formData.district,
-      upazila: formData.upazila,
-    })
 
     console.log(result);
     if (!result.success) {
       console.log(result);
     }
     if (result.success) {
-      console.log(result);
+      toast.success("regiterd successfully");
+      router.push("/login");
     }
   };
   return (

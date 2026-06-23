@@ -30,4 +30,11 @@ export const getFilterDonorDonationRequest = async (requesterId, searchWord)=>{
         console.log(error)
     }
 }
+export const getallDonationRequest = async ()=>{
+      try {
+        return await serverFetch(`/api/all-donation-requests`);
+    } catch (error) {
+        console.log(error)
+    }
+}
 
