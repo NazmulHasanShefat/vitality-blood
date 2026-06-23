@@ -17,7 +17,7 @@ import {
 import { HiOutlineLogout } from "react-icons/hi";
 import { FaRegUser } from "react-icons/fa";
 
-export default function Sidebar({user}) {
+export default function Sidebar({ user }) {
   const pathname = usePathname(); // অ্যাক্টিভ রুট ট্র্যাক করার জন্য (Next.js এনভায়রনমেন্ট)
 
   // মেইন নেভিগেশন আইটেমস (আপনার ছবির সিকোয়েন্স অনুযায়ী)
@@ -33,9 +33,34 @@ export default function Sidebar({user}) {
     if (user?.role === "donor") {
       return [
         { name: "Dashboard", href: "/dashboard/donor", icon: FiGrid },
-        { name: "my request", href: "/dashboard/donor/my-requests", icon: FiUsers },
-        { name: "create request", href: "/dashboard/donor/create-request", icon: FiUsers },
+        {
+          name: "my request",
+          href: "/dashboard/donor/my-requests",
+          icon: FiUsers,
+        },
+        {
+          name: "create request",
+          href: "/dashboard/donor/create-request",
+          icon: FiUsers,
+        },
         { name: "Profile", href: "/dashboard/donor/profile", icon: FaRegUser },
+      ];
+    }
+    if (user?.role === "admin") {
+      return [
+        { name: "Dashboard", href: "/dashboard/admin", icon: FiGrid },
+        {
+          name: "my request",
+          href: "/dashboard/admin/my-requests",
+          icon: FiUsers,
+        },
+        {
+          name: "create request",
+          href: "/dashboard/admin/create-request",
+          icon: FiUsers,
+        },
+        { name: "Profile", href: "/dashboard/admin/profile", icon: FaRegUser },
+        { name: "All users", href: "/dashboard/admin/all-users", icon: FaRegUser },
       ];
     } else {
       return [
@@ -49,8 +74,7 @@ export default function Sidebar({user}) {
     }
   };
 
-
-    const menuItems = getNavItem();
+  const menuItems = getNavItem();
   const bottomItems = [
     { name: "Settings", href: "/settings", icon: FiSettings },
     { name: "Logout", href: "/support", icon: HiOutlineLogout },
@@ -58,9 +82,7 @@ export default function Sidebar({user}) {
 
   return (
     <aside className="w-50 hidden lg:flex h-screen bg-white border-r border-gray-100  flex-col justify-between p-4 dark:bg-[#111827] dark:border-gray-800 transition-colors duration-300 fixed left-0 top-0 z-40">
-
       <div className="flex flex-col space-y-6">
-     
         <Link href={`/`} className="flex items-center space-x-3 px-2">
           <div className="h-9 w-9 rounded-xl bg-[#b91c1c] flex items-center justify-center shadow-md shadow-red-600/10 text-white font-bold text-lg">
             <FiDroplet className="fill-current text-white text-base" />
@@ -89,8 +111,7 @@ export default function Sidebar({user}) {
           {menuItems.map((item) => {
             const IconComponent = item.icon;
             // ছবির মতন ড্যাশবোর্ড আইটেমটি সিলেক্টেড (Active) বোঝানোর লজিক
-            const isActive =
-              pathname === item.href;
+            const isActive = pathname === item.href;
 
             return (
               <Link

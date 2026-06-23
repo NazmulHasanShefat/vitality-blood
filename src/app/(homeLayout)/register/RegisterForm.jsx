@@ -1,9 +1,11 @@
 "use client";
 
+import { CreateUser } from "@/lib/actions/user";
 import { authClient, signUp } from "@/lib/auth-client";
 import { uploadImage } from "@/lib/uploads/imageUpload";
 import { toast } from "@heroui/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import {
   FiUser,
@@ -28,7 +30,7 @@ const RegisterForm = () => {
     confirmPassword: "",
   });
 
-  const [avatarUrl, setAvatarUrl] = useState("fdsa");
+  const [avatarUrl, setAvatarUrl] = useState("fasdf");
   const [uploading, setUploading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -616,6 +618,7 @@ const RegisterForm = () => {
       "Thakurgaon Sadar",
     ],
   };
+  const router = useRouter();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -632,18 +635,18 @@ const RegisterForm = () => {
     imageFormData.append("image", file);
 
     try {
-    //   const IMGBB_API_KEY = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
-    //   const response = await fetch(
-    //     `https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`,
-    //     {
-    //       method: "POST",
-    //       body: imageFormData,
-    //     },
-    //   );
+      //   const IMGBB_API_KEY = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
+      //   const response = await fetch(
+      //     `https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`,
+      //     {
+      //       method: "POST",
+      //       body: imageFormData,
+      //     },
+      //   );
 
-    //   const data = await response.json();
-    const data = await uploadImage(imageFormData);
-    console.log(data)
+      //   const data = await response.json();
+      const data = await uploadImage(imageFormData);
+      console.log(data);
       if (data.success) {
         setAvatarUrl(data.data.url);
         setSuccess("Avatar uploaded successfully!");
@@ -672,23 +675,40 @@ const RegisterForm = () => {
       return;
     }
 
-    const { data, error } = await signUp.email({
-      ...formData,
-      image: avatarUrl,
+    const result = await CreateUser({
+      email: formData.email,
+      name: formData.name,
+      password: formData.password,
       role: "donor",
-      status: "active",
-      callbackURL: "/login"
-    });
-    if(error){
-        console.log("there is some error",error)
-    }
-    if(data){
-      toast.success("registed successfully please login")
-        console.log("submited successfullt",data)
-    }
+      data: {
+        image: avatarUrl,
+        status: "active",
+        bloodGroup: formData.bloodGroup,
+        district: formData.district,
+        upazila: formData.upazila,
 
-    console.log("Registration Data:", { ...formData, avatar: avatarUrl });
-    setSuccess("Registration submitted successfully!");
+      }
+    });
+
+    console.log({
+      email: formData.email,
+      name: formData.name,
+      role: "donor",
+      image: avatarUrl,
+      password: formData.password,
+      status: "active",
+      bloodGroup: formData.bloodGroup,
+      district: formData.district,
+      upazila: formData.upazila,
+    })
+
+    console.log(result);
+    if (!result.success) {
+      console.log(result);
+    }
+    if (result.success) {
+      console.log(result);
+    }
   };
   return (
     <>
@@ -953,8 +973,10 @@ const RegisterForm = () => {
           </button>
         </div>
         <p>
-          Alrady I have an acount 
-        <Link href={`/login`} className="px-3 underline text-red-600">Login</Link>
+          Alrady I have an acount
+          <Link href={`/login`} className="px-3 underline text-red-600">
+            Login
+          </Link>
         </p>
       </form>
     </>
