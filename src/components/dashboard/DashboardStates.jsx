@@ -17,7 +17,7 @@ export default function DashboardStats({ statsData, userData }) {
       {/* ১. ওয়েলকাম সেকশন (আপনার ড্যাশবোর্ড হোম পেইজের স্টাইল অনুযায়ী) */}
       <div className="space-y-1">
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-slate-100 tracking-tight">
-          Welcome back, {userName}! 👋
+          Welcome back, <span className="text-red-600">{userName}!</span> 
         </h1>
         <p className="text-sm text-gray-500 dark:text-gray-400">
           Monitoring real-time blood inventory, community funding, and active urgent donor requests.
@@ -43,7 +43,7 @@ export default function DashboardStats({ statsData, userData }) {
               {totalDonors.toLocaleString()}
             </Card.Title>
             <Card.Description className="text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500 mt-1">
-              Total Active Donors
+              Total Active Users
             </Card.Description>
           </Card.Header>
         </Card>

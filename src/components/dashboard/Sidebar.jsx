@@ -64,12 +64,23 @@ export default function Sidebar({ user }) {
       ];
     } else {
       return [
-        { name: "Dashboard", href: "/dashboard/donor", icon: FiGrid },
-        { name: "Donors", href: "/donors", icon: FiUsers },
-        { name: "Inventory", href: "/inventory", icon: FiDroplet },
-        { name: "Appointments", href: "/appointments", icon: FiCalendar },
-        { name: "Blood Drives", href: "/drives", icon: FiTruck },
-        { name: "Reports", href: "/reports", icon: FiBarChart2 },
+        { name: "Dashboard", href: "/dashboard/volunteer", icon: FiGrid },
+        {
+          name: "my request",
+          href: "/dashboard/volunteer/my-requests",
+          icon: FiUsers,
+        },
+        {
+          name: "create request",
+          href: "/dashboard/volunteer/create-request",
+          icon: FiUsers,
+        },
+        { name: "Profile", href: "/dashboard/volunteer/profile", icon: FaRegUser },
+        {
+          name: "All donation request",
+          href: "/dashboard/volunteer/all-donation-requests",
+          icon: FaRegUser,
+        },
       ];
     }
   };

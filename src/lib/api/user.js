@@ -25,19 +25,19 @@ export const getListUsers = async () => {
   return users?.users;
 };
 
-export const getListUsersWithPaginate = async(userCurrentPage)=>{
+export const getListUsersWithPaginate = async (userCurrentPage) => {
   const pageSize = 5;
-const currentPage = userCurrentPage;
-   const users = await auth.api.listUsers({
+  const currentPage = userCurrentPage;
+  const users = await auth.api.listUsers({
     query: {
-       limit: pageSize,
-        offset: (currentPage - 1) * pageSize
+      limit: pageSize,
+      offset: (currentPage - 1) * pageSize,
     },
     // This endpoint requires session cookies.
     headers: await headers(),
   });
   const totalUsers = users.total;
-const totalPages = Math.ceil(totalUsers / pageSize)
+  const totalPages = Math.ceil(totalUsers / pageSize);
 
-  return {name: "this is data", data: users?.users, totalPages, totalUsers};
-}
+  return { data: users?.users, totalPages, totalUsers };
+};
