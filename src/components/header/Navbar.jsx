@@ -56,7 +56,7 @@ export default function Navbar() {
               <Link
                 key={link.name}
                 href={link.href}
-                className={`relative h-full flex items-center text-sm font-medium transition-colors duration-150 ${
+                className={`relative h-full py-1 flex items-center text-sm font-medium transition-colors duration-150 ${
                   isActive(link.href)
                     ? "text-[#990000] dark:text-[#ef4444] font-semibold"
                     : "text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"

@@ -1,10 +1,9 @@
+import CreateDonationRequest from '@/components/dashboard/create-donation-request-form/requestForm';
+import { getUserSession } from '@/lib/api/user';
 import React from 'react';
 
-import { getUserSession } from '@/lib/api/user';
-import CreateDonationRequest from '@/components/dashboard/create-donation-request-form/requestForm';
-
-const page = async () => {
-    const user = await getUserSession()
+const CreateRequestPage = async () => {
+    const user = await getUserSession();
     return (
         <div>
             <CreateDonationRequest user={user}/>
@@ -12,4 +11,4 @@ const page = async () => {
     );
 };
 
-export default page;
+export default CreateRequestPage;

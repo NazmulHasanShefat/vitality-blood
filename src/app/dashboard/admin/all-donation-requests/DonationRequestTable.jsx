@@ -1,11 +1,12 @@
 "use client";
 
+import DeleteConfirmModal from "@/components/dashboard/deleteModal/DeleteConfirmModal";
+import { OptionsDrop } from "@/components/dashboard/donation-requests-options/OptionsDropDown";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FiCalendar, FiClock, FiFilter, FiMapPin, FiUser } from "react-icons/fi";
 import { MdBloodtype } from "react-icons/md";
-import { OptionsDrop } from "../../donor/my-requests/OptionsDropDown";
-import DeleteConfirmModal from "../../donor/my-requests/DeleteConfirmModal";
+
 
 
 export default function DonationRequestTable({ donorRequests = [] }) {

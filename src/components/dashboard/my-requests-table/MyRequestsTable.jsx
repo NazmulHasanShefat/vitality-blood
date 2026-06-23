@@ -6,12 +6,13 @@ import {
   FiUser,
   FiFilter,
 } from "react-icons/fi";
-import { OptionsDrop } from "./OptionsDropDown";
-import DeleteConfirmModal from "./DeleteConfirmModal";
+
+
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { GiBloodyStash } from "react-icons/gi";
 import { MdBloodtype } from "react-icons/md";
+import DeleteConfirmModal from "@/components/dashboard/deleteModal/DeleteConfirmModal";
+import { OptionsDrop } from "@/components/dashboard/donation-requests-options/OptionsDropDown";
 
 export default function DonationRequestTable({ donorRequests = [] }) {
   const [loading, setLoading] = useState(false);

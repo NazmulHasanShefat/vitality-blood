@@ -1,5 +1,7 @@
 "use client";
 
+import DeleteConfirmModal from "@/components/dashboard/deleteModal/DeleteConfirmModal";
+import { OptionsDrop } from "@/components/dashboard/donation-requests-options/OptionsDropDown";
 import Link from "next/link";
 import React, { useState } from "react";
 import {
@@ -13,16 +15,10 @@ import {
   FiClock,
   FiUser,
 } from "react-icons/fi";
-import { OptionsDrop } from "./my-requests/OptionsDropDown";
-import DeleteConfirmModal from "./my-requests/DeleteConfirmModal";
+
 
 
 export default function RecentDonationRequestTable({ donorRequests }) {
-
-
-
-
-
   return (
     <div className="w-full bg-slate-50 dark:bg-[#0b0f19] py-8 px-4 sm:px-6 lg:px-8 min-h-screen transition-colors duration-300">
       <div className="max-w-7xl mx-auto">

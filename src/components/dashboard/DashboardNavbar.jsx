@@ -7,7 +7,7 @@ import { getUserSession } from "@/lib/api/user";
 export default async function DashboardNavbar() {
  const user = await getUserSession();
   return (
-    <header className="w-full h-20 bg-white border-b border-gray-100 dark:bg-[#111827] dark:border-gray-800 flex items-center justify-between px-6 transition-colors duration-300">
+    <header className="w-full h-15 bg-white border-b border-gray-100 dark:bg-[#111827] dark:border-gray-800 flex items-center justify-between px-6 transition-colors duration-300">
       <div className="flex-1 max-w-md">
         <div className="relative hidden">
           <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
