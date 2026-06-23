@@ -1,9 +1,12 @@
+import AllDonationRequestTable from '@/components/dashboard/all-donation-request-table/AllDonationRequestTable';
+import { getallDonationRequest } from '@/lib/api/donation';
 import React from 'react';
 
-const page = () => {
+const page = async () => {
+    const donorRequests = await getallDonationRequest();
     return (
         <div>
-            all donation requests
+           <AllDonationRequestTable donorRequests={donorRequests} />
         </div>
     );
 };
