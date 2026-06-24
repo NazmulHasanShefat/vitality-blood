@@ -11,6 +11,7 @@ import {
   FiShield, 
   FiCreditCard
 } from 'react-icons/fi'
+import { createFundingHistory } from '@/lib/actions/fundings'
 
 export default async function Success({ searchParams }) {
   const { session_id } = await searchParams
@@ -47,6 +48,10 @@ export default async function Success({ searchParams }) {
     const paymentMethodBrand = typeof payment_intent === 'object' 
       ? payment_intent?.payment_method_types?.[0] 
       : 'Card'
+
+
+     const result = await createFundingHistory({customerEmail, transactionId, transactionAmount: amountTotal})
+     console.log(result)
 
     return (
       <div className="min-h-screen bg-[#f8fafc] dark:bg-[#0b0f19] flex flex-col items-center justify-center p-4 sm:p-6 transition-colors duration-300">

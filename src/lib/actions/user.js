@@ -1,6 +1,8 @@
 "use server";
 
+import { headers } from "next/headers";
 import { auth } from "../auth";
+import { redirect } from "next/navigation";
 
 export const CreateUser = async (userData) => {
   try {
@@ -10,7 +12,8 @@ export const CreateUser = async (userData) => {
     return { success: true, ...newUser };
   } catch (error) {
     const errorMessages = {
-      USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL: "An account with this email already exists.",
+      USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL:
+        "An account with this email already exists.",
       PASSWORD_TOO_SHORT: "Password is too short.",
       PASSWORD_TOO_LONG: "Password is too long.",
       INVALID_EMAIL: "Please enter a valid email address.",
@@ -24,5 +27,18 @@ export const CreateUser = async (userData) => {
         errorMessages[code] ?? "Failed to create user. Please try again.",
       code,
     };
+  }
+};
+
+export const SignOutServerAction = async () => {
+  try {
+    await auth.api.signOut({
+      headers: await headers(),
+    });
+    // Redirect the user back to the home or login page after signing out
+    redirect("/login")
+    
+  } catch (error) {
+    console.log(error);
   }
 };

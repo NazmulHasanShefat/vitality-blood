@@ -1,88 +1,100 @@
-import React from "react";
-import Image from "next/image";
-import { FiHeart, FiShield, FiUsers, FiCheckCircle } from "react-icons/fi";
-import DonationForm from "./DonateForm"; // নিচে ২ নম্বর ফাইলে এই ক্লায়েন্ট কম্পোনেন্টটি আছে
+import { stripe } from '@/lib/stripe'
+import Link from 'next/link'
+import { redirect } from 'next/navigation'
+import { 
+  FiHeart, 
+  FiDollarSign, 
+  FiCalendar, 
+  FiUser, 
+  FiArrowUpRight, 
+  FiTrendingUp 
+} from 'react-icons/fi'
 
-export const metadata = {
-  title: "Donate Now | Vitality Blood Network",
-  description: "Support our blood donation campaigns and save lives today.",
-};
+// Mock Data: Replace this with your actual database query (Prisma, Mongoose, Postgres, etc.)
+async function getFundingHistory() {
+  return [
+    { id: '1', name: 'Anik Rahman', amount: 50.00, currency: '$', date: 'Jun 24, 2026' },
+    { id: '2', name: 'Sarah Jenkins', amount: 120.00, currency: '$', date: 'Jun 22, 2026' },
+    { id: '3', name: 'Tanvir Hossain', amount: 30.00, currency: '$', date: 'Jun 18, 2026' },
+  ]
+}
 
-export default async function DonatePage() {
-  // আপনি চাইলে এখানে ডাটাবেজ বা ব্যাকএন্ড API থেকে সার্ভার-সাইড ডাটা ফেচ করতে পারেন
-  // const campaignData = await getCampaignDetails();
+export default async function FundingPage() {
+  const funds = await getFundingHistory()
 
-  const impactStats = [
-    { id: 1, icon: <FiHeart className="text-xl text-red-600" />, title: "Free Blood Matching", desc: "Helps connect critical patients with blood donors instantly." },
-    { id: 2, icon: <FiUsers className="text-xl text-blue-600" />, title: "Volunteer Support", desc: "Funds logistics and campaigns in remote areas of Bangladesh." },
-    { id: 3, icon: <FiShield className="text-xl text-emerald-600" />, title: "Secure Data", desc: "Ensures encrypted data privacy for millions of medical records." },
-  ];
+  // Calculate total funds for the dashboard summary banner
+  const totalRaised = funds.reduce((acc, curr) => acc + curr.amount, 0).toFixed(2)
+
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0b0f19] text-[#0f172a] dark:text-[#f8fafc] py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
+    <div className="min-h-screen bg-[#f8fafc] dark:bg-[#0b0f19] text-slate-800 dark:text-slate-100 p-4 sm:p-8 transition-colors duration-300">
       <div className="max-w-5xl mx-auto">
         
-        {/* হেডার সেকশন */}
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-bold uppercase tracking-wider bg-red-50 dark:bg-red-950/30 text-[#b91c1c] dark:text-[#f87171] rounded-full mb-4">
-            <FiHeart className="animate-pulse" /> Every Taka Counts
-          </span>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-slate-100 tracking-tight mb-4">
-            Empower Our Life-Saving Mission
-          </h1>
-          <p className="text-gray-500 dark:text-gray-400 text-sm sm:text-base leading-relaxed">
-            Your generous financial support keeps our platform 100% free for blood seekers and helps organize awareness camps across the country.
-          </p>
+        {/* Header Block & Donation Trigger Action */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-[#111827] border border-slate-100 dark:border-slate-800/80 rounded-3xl p-6 sm:p-8 shadow-sm mb-6">
+          <div>
+            <span className="text-xs font-bold text-[#b91c1c] tracking-widest uppercase flex items-center gap-1.5 mb-1.5">
+              <FiHeart className="animate-pulse" /> Financial Transparency
+            </span>
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+              Organization Fund Logs
+            </h1>
+            <p className="text-slate-400 dark:text-gray-400 text-sm mt-1 max-w-xl">
+              Track public micro-donations directly supporting field operations. Volunteer and Admin modules aggregate these records instantly.
+            </p>
+          </div>
+
+          {/* Secure Form wrapping Server Action for Checkout redirection */}
+          <div className="w-full sm:w-auto">
+            <Link
+              href={`/funding/give-fund`}
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#b91c1c] hover:bg-[#991b1b] text-white px-6 py-3.5 rounded-xl font-bold text-sm shadow-md shadow-red-900/10 transition active:scale-[0.98]"
+            >
+              <FiHeart className="text-base fill-current" />
+              Contribute Funds
+              <FiArrowUpRight className="text-xs opacity-60" />
+            </Link>
+          </div>
         </div>
 
-        {/* মেইন গ্রিড লেআউট (বাম পাশে ইনফো, ডান পাশে ইন্টারেক্টিভ ফর্ম) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
-          {/* বাম কলাম: ইমপ্যাক্ট ও ইনফরমেশন (সার্ভার সাইড রেন্ডার্ড) */}
-          <div className="lg:col-span-5 space-y-6">
-            <div className="bg-white dark:bg-[#111827] rounded-3xl p-6 border border-gray-100 dark:border-gray-800 shadow-xl">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-slate-100 mb-4">
-                Where Does Your Donation Go?
-              </h3>
-              
-              <div className="space-y-5">
-                {impactStats.map((stat) => (
-                  <div key={stat.id} className="flex gap-4 items-start">
-                    <div className="p-3 rounded-2xl bg-slate-50 dark:bg-[#1e293b]/50 shrink-0 border border-gray-100 dark:border-gray-800">
-                      {stat.icon}
-                    </div>
-                    <div>
-                      <h4 className="text-sm font-semibold text-gray-800 dark:text-slate-200">
-                        {stat.title}
-                      </h4>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">
-                        {stat.desc}
-                      </p>
-                    </div>
-                  </div>
+        {/* Funding History Table Section */}
+        <div className="bg-white dark:bg-[#111827] border border-slate-100 dark:border-slate-800/80 rounded-2xl shadow-sm overflow-hidden">
+          <div className="p-5 border-b border-slate-100 dark:border-slate-800/60 flex items-center justify-between">
+            <h3 className="font-bold text-slate-900 dark:text-white text-sm">Recent Contributions</h3>
+            <span className="text-xs px-2.5 py-1 rounded-full font-medium bg-slate-50 dark:bg-slate-800 text-slate-400">
+              {funds.length} Donations Recorded
+            </span>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-slate-50/70 dark:bg-[#1e293b]/20 border-b border-slate-100 dark:border-slate-800/50">
+                  <th className="p-4 text-[11px] font-bold uppercase tracking-wider text-slate-400"><span className="flex items-center gap-1.5"><FiUser /> Contributor</span></th>
+                  <th className="p-4 text-[11px] font-bold uppercase tracking-wider text-slate-400"><span className="flex items-center gap-1.5"><FiDollarSign /> Amount</span></th>
+                  <th className="p-4 text-[11px] font-bold uppercase tracking-wider text-slate-400"><span className="flex items-center gap-1.5"><FiCalendar /> Date</span></th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800/40">
+                {funds.map((fund) => (
+                  <tr key={fund.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/20 transition-colors">
+                    <td className="p-4 text-sm font-semibold text-slate-800 dark:text-slate-200">
+                      {fund.name}
+                    </td>
+                    <td className="p-4 text-sm font-bold text-emerald-500 dark:text-emerald-400">
+                      {fund.currency}{fund.amount.toFixed(2)}
+                    </td>
+                    <td className="p-4 text-xs font-medium text-slate-400 dark:text-slate-500">
+                      {fund.date}
+                    </td>
+                  </tr>
                 ))}
-              </div>
-
-              <hr className="my-6 border-gray-100 dark:border-gray-800" />
-
-              {/* ট্রাস্ট ব্যাজ */}
-              <div className="bg-emerald-50/50 dark:bg-emerald-950/10 border border-emerald-100 dark:border-emerald-900/30 rounded-2xl p-4 flex gap-3 items-center">
-                <FiCheckCircle className="text-xl text-emerald-600 dark:text-emerald-400 shrink-0" />
-                <p className="text-xs font-medium text-emerald-800 dark:text-emerald-400">
-                  Secured 256-bit SSL encrypted transactions. Standard refund policy applies.
-                </p>
-              </div>
-            </div>
+              </tbody>
+            </table>
           </div>
-
-          {/* ডান কলাম: পেমেন্ট ফর্ম (ক্লায়েন্ট কম্পোনেন্ট) */}
-          <div className="lg:col-span-7 w-full">
-            <DonationForm />
-          </div>
-
         </div>
 
       </div>
     </div>
-  );
+  )
 }
