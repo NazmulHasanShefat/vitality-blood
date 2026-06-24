@@ -1,29 +1,40 @@
 "use client";
 
+import { toast } from "@heroui/react";
 import React, { useState } from "react";
 import { FiCreditCard, FiArrowRight } from "react-icons/fi";
 
 export default function DonationForm() {
   const [amount, setAmount] = useState("500");
-  const [customAmount, setCustomAmount] = useState("");
+  const [customAmount, setCustomAmount] = useState(200);
+  const [finalAnount, setFinalAmount] = useState(200);
 
-  const presetAmounts = ["200", "500", "1000", "2000"];
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const finalAmount = amount === "custom" ? customAmount : amount;
-    
-    // bKash, SSLCommerz, বা Stripe গেটওয়ে ট্রিগার করার লজিক এখানে হবে
-    console.log("Processing One-Time Payment for:", {
-      amount: finalAmount,
-      type: "one-time"
-    });
+  const presetAmounts = [200, 500, 1000, 2000];
+  const handleSubmitValidation = (e) => {
+    if(customAmount < 200){
+      e.preventDefault()
+      toast.danger("minimum amount need is 200")
+      return
+    }if((customAmount.toString()).length > 10){
+       e.preventDefault()
+      toast.danger("your amount is to much becous this amount is not accepted in one time")
+      return
+    }
+    else{
+      return 
+    }
   };
 
   return (
     <div className="bg-white dark:bg-[#111827] rounded-3xl p-6 sm:p-8 border border-gray-100 dark:border-gray-800 shadow-xl">
-      <form action="/api/checkout_sessions" method="POST" className="space-y-6">
-        
+      <form
+        onSubmit={handleSubmitValidation}
+        action="/api/checkout_sessions"
+        method="POST"
+        className="space-y-6"
+      >
+        <input type="hidden" name="amount" value={finalAnount} />
+
         {/* প্রিসেট অ্যামাউন্ট সিলেকশন গ্রিড */}
         <div>
           <label className="block text-sm font-semibold mb-3 text-gray-700 dark:text-gray-300">
@@ -31,15 +42,16 @@ export default function DonationForm() {
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {presetAmounts.map((preset) => {
-              const isSelected = amount === preset;
+              const isSelected = finalAnount === preset;
               return (
                 <button
                   key={preset}
                   type="button"
                   role="link"
                   onClick={() => {
-                    setAmount(preset);
-                    setCustomAmount("");
+                    // setAmount(preset)
+                    setFinalAmount(preset);
+                   
                   }}
                   className={`py-3.5 px-4 rounded-xl border font-bold text-sm transition-all duration-200 text-center ${
                     isSelected
@@ -70,12 +82,20 @@ export default function DonationForm() {
 
           {amount === "custom" && (
             <div className="relative flex-1 animate-fadeIn">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-sm">৳</span>
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-sm">
+                ৳
+              </span>
               <input
                 type="number"
                 placeholder="Enter custom amount"
                 value={customAmount}
-                onChange={(e) => setCustomAmount(e.target.value)}
+                minLength={4}
+                onChange={(e) => {
+                  amount === "custom"
+                    ? (setFinalAmount(e.target.value),
+                     setCustomAmount(e.target.value))
+                    : null;
+                }}
                 required={amount === "custom"}
                 min="10"
                 className="w-full pl-8 pr-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-[#1e293b]/40 text-gray-800 dark:text-slate-100 text-sm focus:ring-2 focus:ring-red-500/20 focus:border-[#b91c1c] outline-none transition"
@@ -107,7 +127,6 @@ export default function DonationForm() {
           Proceed to One-Time Payment
           <FiArrowRight className="text-base" />
         </button>
-
       </form>
     </div>
   );
