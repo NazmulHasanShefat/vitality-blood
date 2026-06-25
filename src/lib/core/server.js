@@ -1,6 +1,7 @@
 "use server";
 
 import { getuserToken } from "./session";
+import { headers } from 'next/headers';
 
 const baseUrl = process.env.BACKEND_BASE_URL;
 
@@ -27,6 +28,7 @@ export const serverMutaion = async (
       method: actionMethod,
       headers: {
         "Content-Type": "application/json",
+        ... await authHeader(),
       },
       body: JSON.stringify(formData),
     });

@@ -4,28 +4,28 @@ import { protectedFetch, serverFetch } from "../core/server"
 
 export const getDonorDonationRequests = async (donorId)=>{
     try {
-        return await serverFetch(`/api/get-donor-donation-request/${donorId}`)
+        return await protectedFetch(`/api/get-donor-donation-request/${donorId}`)
     } catch (error) {
         console.log(error)
     }
 }
 export const getDonationDetails = async (requestId)=>{
     try {
-        return await serverFetch(`/api/get-donation-detail/${requestId}`);
+        return await protectedFetch(`/api/get-donation-detail/${requestId}`);
     } catch (error) {
         console.log(error)
     }
 }
 export const getRecentDonorDonationRequest = async (requesterId)=>{
       try {
-        return await serverFetch(`/api/get-recent-donor-request/${requesterId}`);
+        return await protectedFetch(`/api/get-recent-donor-request/${requesterId}`);
     } catch (error) {
         console.log(error)
     }
 }
 export const getFilterDonorDonationRequest = async (requesterId, searchWord)=>{
       try {
-        return await serverFetch(`/api/filter-donation-request/${requesterId}?searchQuery=${searchWord}`);
+        return await protectedFetch(`/api/filter-donation-request/${requesterId}?searchQuery=${searchWord}`);
     } catch (error) {
         console.log(error)
     }
@@ -40,7 +40,7 @@ export const getallDonationRequest = async ()=>{
 
 export const getPendingBloodDonationRequest = async ()=>{
     try {
-       return protectedFetch(`/api/get-pending-blood-donation-request?donationStatus=pending`) 
+       return serverFetch(`/api/get-pending-blood-donation-request?donationStatus=pending`) 
     } catch (error) {
         console.log(error)
     }
