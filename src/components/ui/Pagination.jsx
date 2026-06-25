@@ -20,6 +20,7 @@ export default function Pagination({
 
   return (
     <div className="flex items-center justify-center gap-2 py-6 bg-transparent">
+       
       
       {/* ১. Previous (আগের) বাটন */}
       <button
@@ -32,7 +33,7 @@ export default function Pagination({
       </button>
 
       {/* ২. ডাইনামিক পেজ নম্বরসমূহ (২, ৩ বা তার বেশি) */}
-      <div className="flex items-center gap-1.5">
+      <div className="grid lg:grid-cols-20 md:grid-cols-10 grid-cols-4 items-center gap-1.5">
         {getPageNumbers().map((page) => {
           const isActive = page === currentPage;
           return (
