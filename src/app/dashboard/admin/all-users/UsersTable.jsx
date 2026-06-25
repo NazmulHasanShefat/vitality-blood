@@ -12,7 +12,7 @@ import {
 
 export default function UsersTable({ usersData = [], onAction, currentStatus, onStatusChange }) {
   return (
-    <div className="w-full bg-slate-50 dark:bg-[#0b0f19] py-8 px-4 sm:px-6 lg:px-8 min-h-screen transition-colors duration-300">
+    <div className="w-full bg-slate-50 dark:bg-[#0b0f19] py-8 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
       <div className="max-w-7xl mx-auto">
         
         {/* টেবিলের মূল কন্টেইনার কার্ড */}
