@@ -15,7 +15,7 @@ const page = async ({searchParams}) => {
     return (
         <div>
             <UsersTable usersData={newLimitUsers}/>
-            <UsersListPagination ShowLinitUser={ShowLinitUser}/>
+            <UsersListPagination ShowLimitUser={ShowLinitUser}/>
         </div>
     );
 };

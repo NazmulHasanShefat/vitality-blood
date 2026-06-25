@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, use, useEffect, useState } from "react";
 import { Card, Link } from "@heroui/react";
 // React Icons
 import { BiFilterAlt, BiMap } from "react-icons/bi";
@@ -16,6 +16,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { divisions, divisionsWithDistricts } from "@/context/address";
 import RequestCard from "./RequestCard";
 import BloodLoadingSpinner from "@/components/ui/Loading";
+import AllPagination from "@/components/ui/AllPagination";
 
 const bloodGroups = [
   "All Groups",
@@ -30,6 +31,9 @@ const bloodGroups = [
 ];
 
 export default function FindLifeSaver({ pedingRequests, user }) {
+  const myDataInfo = use(pedingRequests)
+  const total = myDataInfo?.pagination?.totalPages;
+
   const [loading, setLoading] = useState(false);
   const [blood, setblood] = useState("");
   const [district, setdistrict] = useState("");
@@ -209,27 +213,10 @@ export default function FindLifeSaver({ pedingRequests, user }) {
         </div>
 
         {/* Pagination Section */}
-        <div className="flex justify-center items-center gap-2 mt-12 pb-10">
-          <button className="p-2 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-400 dark:text-slate-500 transition-colors">
-            <FiChevronLeft />
-          </button>
-          <button className="w-9 h-9 flex items-center justify-center rounded-lg bg-red-700 text-white font-semibold text-sm shadow-md">
-            1
-          </button>
-          <button className="w-9 h-9 flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 font-medium text-sm text-slate-600 dark:text-slate-400 transition-colors">
-            2
-          </button>
-          <button className="w-9 h-9 flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 font-medium text-sm text-slate-600 dark:text-slate-400 transition-colors">
-            3
-          </button>
-          <span className="px-1 text-slate-400 dark:text-slate-600">...</span>
-          <button className="w-9 h-9 flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 font-medium text-sm text-slate-600 dark:text-slate-400 transition-colors">
-            12
-          </button>
-          <button className="p-2 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-400 dark:text-slate-500 transition-colors">
-            <FiChevronRight />
-          </button>
-        </div>
+
+
+  <AllPagination totalPage={total}/>
+      
       </div>
     </div>
   );

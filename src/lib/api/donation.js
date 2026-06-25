@@ -38,9 +38,9 @@ export const getallDonationRequest = async ()=>{
     }
 }
 
-export const getPendingBloodDonationRequest = async (bloodGroup,divition , district)=>{
+export const getPendingBloodDonationRequest = async (bloodGroup, divition, district, page)=>{
     try {
-       return serverFetch(`/api/get-pending-blood-donation-request?donationStatus=pending&bloodGroup=${bloodGroup || ""}&recipientDivision=${divition || ""}&recipientDistrict=${district || ""}`) 
+       return serverFetch(`/api/get-pending-blood-donation-request?donationStatus=pending&bloodGroup=${bloodGroup || ""}&recipientDivision=${divition || ""}&recipientDistrict=${district || ""}&page=${page}`) 
     } catch (error) {
         console.log(error)
     }

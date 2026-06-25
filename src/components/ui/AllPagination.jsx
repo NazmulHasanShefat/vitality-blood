@@ -3,14 +3,14 @@ import React, { useState } from "react";
 import Pagination from "./Pagination"; // পাথ ঠিক করে নিবেন
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-export default function UsersListPagination({ ShowLimitUser }) {
+export default function AllPagination({ totalPage }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathName = usePathname();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const totalPages = ShowLimitUser.totalPages; // আপনার ডাটা অনুযায়ী মোট পেজ সংখ্যা (যেমন: ৩টি পেজ)
+  const totalPages = totalPage; // আপনার ডাটা অনুযায়ী মোট পেজ সংখ্যা (যেমন: ৩টি পেজ)
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
