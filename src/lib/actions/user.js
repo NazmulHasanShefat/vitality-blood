@@ -3,6 +3,7 @@
 import { headers } from "next/headers";
 import { auth } from "../auth";
 import { redirect } from "next/navigation";
+import { serverMutaion } from "../core/server";
 
 export const CreateUser = async (userData) => {
   try {
@@ -42,3 +43,11 @@ export const SignOutServerAction = async () => {
     console.log(error);
   }
 };
+
+export const updateUserProfile = async (userData,userId)=>{
+  try {
+    return serverMutaion(`/api/update-user/${userId}`, userData, "PATCH")
+  } catch (error) {
+    console.log(error)
+  }
+}

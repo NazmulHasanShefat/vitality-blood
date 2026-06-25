@@ -13,79 +13,9 @@ const bloodGroups = ["All Groups", "A+", "A-", "B+", "B-", "O+", "O-", "AB+", "A
 const districts = ["Dhaka", "Chittagong", "Rajshahi", "Sylhet", "Khulna"];
 const upazilas = ["Mirpur", "Gulshan", "Dhanmondi", "Uttara", "Banani"];
 
-// Provided Database Structure Data Mocked for mapping
-const donorsData = [
-  {
-    _id: { $oid: "6a39256cf054f2fff1b91ed7" },
-    recipientName: "Ahmed Al-Sayed",
-    bloodGroup: "B+",
-    recipientDistrict: "Dhaka",
-    recipientUpazila: "Gulshan 2",
-    hospitalName: "Apollo Hospital",
-    fullAddress: "Gulshan 2, Dhaka",
-    donationDate: "2023-10-14",
-    donationTime: "14:30",
-    requestMessage: "Urgent need for a surgery patient.",
-    requesterName: "Wonda",
-    requesterEmail: "wanda@gmail.com",
-    donationStatus: "verified", // dynamic status styling helper
-    totalDonations: "8 Times",
-    healthStatus: "Fit"
-  },
-  {
-    _id: { $oid: "6a39256cf054f2fff1b91ed8" },
-    recipientName: "Fatima Rahman",
-    bloodGroup: "O-",
-    recipientDistrict: "Dhaka",
-    recipientUpazila: "Dhanmondi",
-    hospitalName: "Labaid Hospital",
-    fullAddress: "Dhanmondi, Dhaka",
-    donationDate: "Available Now",
-    donationTime: "10:00",
-    requestMessage: "Thalassemia patient needs immediate replacement.",
-    requesterName: "Rahat",
-    requesterEmail: "rahat@gmail.com",
-    donationStatus: "rare group",
-    totalDonations: "12 Times",
-    healthStatus: "Excellent"
-  },
-  {
-    _id: { $oid: "6a39256cf054f2fff1b91ed9" },
-    recipientName: "Tanvir Hossain",
-    bloodGroup: "A+",
-    recipientDistrict: "Dhaka",
-    recipientUpazila: "Uttara",
-    hospitalName: "Dhaka Medical",
-    fullAddress: "Uttara, Dhaka",
-    donationDate: "2024-01-02",
-    donationTime: "11:15",
-    requestMessage: "Accident case.",
-    requesterName: "Siam",
-    requesterEmail: "siam@gmail.com",
-    donationStatus: "verified",
-    totalDonations: "4 Times",
-    healthStatus: "Fit"
-  },
-  {
-    _id: { $oid: "6a39256cf054f2fff1b91eda" },
-    recipientName: "Nusrat Jahan",
-    bloodGroup: "AB+",
-    recipientDistrict: "Dhaka",
-    recipientUpazila: "Banani",
-    hospitalName: "Square Hospital",
-    fullAddress: "Banani, Dhaka",
-    donationDate: "2023-12-20",
-    donationTime: "16:00",
-    requestMessage: "Routine blood exchange.",
-    requesterName: "Anika",
-    requesterEmail: "anika@gmail.com",
-    donationStatus: "verified",
-    totalDonations: "6 Times",
-    healthStatus: "Fit"
-  }
-];
 
-export default function FindLifeSaver() {
+
+export default function FindLifeSaver({pedingRequests, user}) {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 transition-colors duration-300">
       
@@ -100,10 +30,7 @@ export default function FindLifeSaver() {
               Search through our verified clinical donor database by region and blood group.
             </p>
           </div>
-          <button className="flex items-center justify-center gap-2 bg-red-700 hover:bg-red-800 text-white font-medium px-4 py-2.5 rounded-lg transition-all shadow-md self-start md:self-auto">
-            <FiPlus className="text-lg" />
-            <span>Register New Donor</span>
-          </button>
+     
         </div>
 
         {/* Filter Panel */}
@@ -185,7 +112,7 @@ export default function FindLifeSaver() {
 
         {/* Donors Cards Grid Layout mapped using Hero UI Card Structure */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {donorsData.map((donor, index) => (
+          {pedingRequests.map((donor, index) => (
             <Card 
               key={index} 
               className="w-full bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
@@ -224,19 +151,16 @@ export default function FindLifeSaver() {
                   {/* Informational Rows */}
                   <div className="space-y-2 text-xs border-t border-slate-100 dark:border-slate-800 pt-3">
                     <div className="flex justify-between">
-                      <span className="text-slate-400 dark:text-slate-500">Last Donation:</span>
+                      <span className="text-slate-400 dark:text-slate-500">Donation Date:</span>
                       <span className="font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1">
                         <HiOutlineCalendar className="text-slate-400" /> {donor.donationDate}
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-slate-400 dark:text-slate-500">Total Donations:</span>
-                      <span className="font-semibold text-slate-700 dark:text-slate-300">{donor.totalDonations}</span>
+                      <span className="text-slate-400 dark:text-slate-500">Donation Time:</span>
+                      <span className="font-semibold text-slate-700 dark:text-slate-300">{donor?.donationTime}</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-400 dark:text-slate-500">Health Status:</span>
-                      <span className="font-semibold text-emerald-600 dark:text-emerald-400">{donor.healthStatus}</span>
-                    </div>
+                  
                   </div>
                 </div>
               </div>
@@ -253,7 +177,7 @@ export default function FindLifeSaver() {
                   </Link>
                 ) : (
                   <Link
-                    href="#"
+                    href={!user ? `/login`: `/dashboard/${user?.role}/my-requests/${donor._id}`}
                     className="w-full flex items-center justify-center gap-2 bg-red-700 hover:bg-red-800 text-white text-xs font-bold py-2.5 rounded-lg transition-colors shadow-sm"
                   >
                     <HiOutlineHeart className="text-sm" />

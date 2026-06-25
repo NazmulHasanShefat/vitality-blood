@@ -1,6 +1,6 @@
 "use server"
 
-import { serverFetch } from "../core/server"
+import { protectedFetch, serverFetch } from "../core/server"
 
 export const getDonorDonationRequests = async (donorId)=>{
     try {
@@ -32,9 +32,16 @@ export const getFilterDonorDonationRequest = async (requesterId, searchWord)=>{
 }
 export const getallDonationRequest = async ()=>{
       try {
-        return await serverFetch(`/api/all-donation-requests`);
+        return await protectedFetch(`/api/all-donation-requests`);
     } catch (error) {
         console.log(error)
     }
 }
 
+export const getPendingBloodDonationRequest = async ()=>{
+    try {
+       return protectedFetch(`/api/get-pending-blood-donation-request?donationStatus=pending`) 
+    } catch (error) {
+        console.log(error)
+    }
+}

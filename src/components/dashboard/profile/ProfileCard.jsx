@@ -3,30 +3,22 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { FiUser, FiMail, FiMapPin, FiDroplet, FiEdit3, FiCheckCircle, FiXCircle } from "react-icons/fi";
-import { districts, upazilas } from "@/context/address";
-
-// বাংলাদেশর জেলা ও উপজেলার ডাটা সোর্স
-const bdLocationData = {
-  Dhaka: ["Dhanmondi", "Mirpur", "Gulshan", "Uttara", "Savars", "Motijheel"],
-  Khulna: ["Dacope", "Bagerhat Sadar", "Rupsha", "Phultala", "Koyra", "Dumuria"],
-  Rajshahi: ["Mohanpur", "Bagha", "Puthia", "Paba", "Godagari", "Tanore"],
-  Chittagong: ["Hathazari", "Patiya", "Raozan", "Sitakunda", "Anwara", "Sadar"],
-  Sylhet: ["Beanibazar", "Golapganj", "Fenchuganj", "Balaganj", "Biswanath"],
-  Barisal: ["Bakerganj", "Babuganj", "Gournadi", "Mehendiganj", "Muladi"],
-  Rangpur: ["Mithapukur", "Pirganj", "Badarganj", "Kaunia", "Gangachara"],
-  Mymensingh: ["Gaffargaon", "Ishwarganj", "Muktagachha", "Bhaluka", "Trishal"]
-};
+// আপনার রেফারেন্স ফাইল থেকে divisions এবং divisionsWithDistricts ইমপোর্ট করা হলো
+import { divisions, divisionsWithDistricts, upazilas } from "@/context/address";
+import { updateUserProfile } from "@/lib/actions/user";
+import { toast } from "@heroui/react";
 
 export default function ProfileCard({ user }) {
   const [isEditable, setIsEditable] = useState(false);
 
-  // মূল ইউজার ডাটা স্টেট
+
   const [userData, setUserData] = useState({
     name: user?.name || "",
     email: user?.email || "",
     avatar: user?.image || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&h=150&q=80",
     role: user?.role || "donor", 
     bloodGroup: user?.bloodGroup || "O+",
+    division: user?.division || "", 
     district: user?.district || "",
     upazila: user?.upazila || "",
   });
@@ -39,6 +31,7 @@ export default function ProfileCard({ user }) {
         avatar: user.image || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&h=150&q=80",
         role: user.role || "donor",
         bloodGroup: user.bloodGroup || "O+",
+        division: user.division || "", 
         district: user.district || "",
         upazila: user.upazila || "",
       });
@@ -49,20 +42,44 @@ export default function ProfileCard({ user }) {
     const { name, value } = e.target;
     setUserData((prev) => {
       const updatedData = { ...prev, [name]: value };
+      
+   
+      if (name === "division") {
+        updatedData.district = "";
+        updatedData.upazila = "";
+      }
+      
+     
       if (name === "district") {
-        updatedData.upazila = bdLocationData[value]?.[0] || "";
+        updatedData.upazila = "";
       }
       return updatedData;
     });
   };
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
     console.log("Saving updated profile data:", userData);
+    const result = await updateUserProfile(userData, user?.id)
+    if(result.modifiedCount === 1){
+      toast.success("updated successfully")
+    }else{
+      toast.danger("something want wrong !")
+    }
+    console.log(result)
     setIsEditable(false);
+
   };
 
-  const availableUpazilas = bdLocationData[userData.district] || [];
+  // সিলেক্টেড বিভাগের ওপর ভিত্তি করে জেলা ফিল্টার
+  const availableDistricts = userData.division 
+    ? divisionsWithDistricts[userData.division] || [] 
+    : [];
+
+  // সিলেক্টেড জেলার উপর ভিত্তি করে উপজেলা ফিল্টার
+  const availableUpazilas = userData.district 
+    ? upazilas[userData.district] || [] 
+    : [];
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#0b0f19] text-[#0f172a] dark:text-[#f8fafc] py-10 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
@@ -71,13 +88,13 @@ export default function ProfileCard({ user }) {
         {/* Banner Decoration Area */}
         <div className="h-32 w-full bg-gradient-to-r from-[#990000] to-[#b91c1c] relative" />
 
-        {/* Profile Info Summary (সম্পূর্ণ সেন্টারড লেআউট) */}
+        {/* Profile Info Summary */}
         <div className="px-6 pb-8 relative flex flex-col items-center text-center">
           
-          {/* Profile Image Avatar (সেন্টার করার জন্য মার্জিন অটো ও মাইনাস মার্জিন ব্যালেন্স করা হয়েছে) */}
+          {/* Profile Image Avatar */}
           <div className="relative h-28 w-28 -mt-14 rounded-full border-4 border-white dark:border-[#111827] overflow-hidden bg-slate-100 dark:bg-slate-800 shadow-md z-10">
             <Image
-              src={user?.image}
+              src={userData.avatar}
               alt={`${userData.name}'s Profile Avatar`}
               fill
               className="object-cover"
@@ -86,7 +103,7 @@ export default function ProfileCard({ user }) {
             />
           </div>
           
-          {/* নাম এবং ব্যাজ (সেন্টারড টেক্সট) */}
+          {/* নাম এবং ব্যাজ */}
           <div className="mt-4 mb-4">
             <h1 className="text-2xl text-gray-900 dark:text-slate-100 font-bold tracking-tight mb-1">
               {userData.name}
@@ -96,7 +113,7 @@ export default function ProfileCard({ user }) {
             </span>
           </div>
 
-          {/* ফর্ম অ্যাকশন বাটন (একদম সেন্টারে বসানো হয়েছে) */}
+          {/* ফর্ম অ্যাকশন বাটন */}
           <div className="mb-8">
             {!isEditable ? (
               <button
@@ -119,7 +136,7 @@ export default function ProfileCard({ user }) {
             )}
           </div>
 
-          {/* ইনপুট ফর্ম এলিমেন্টস (ফর্মের টেক্সট বামে এলাইন রাখার জন্য w-full দেওয়া) */}
+          {/* ইনপুট ফর্ম এলিমেন্টস */}
           <form onSubmit={handleSave} className="space-y-6 w-full text-left">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               
@@ -186,6 +203,31 @@ export default function ProfileCard({ user }) {
                 </div>
               </div>
 
+              {/* Division (নতুন যোগ করা ইনপুট) */}
+              <div>
+                <label className="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">
+                  Division
+                </label>
+                <div className="relative">
+                  <FiMapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
+                  <select
+                    name="division"
+                    value={userData.division}
+                    onChange={handleInputChange}
+                    disabled={!isEditable}
+                    required
+                    className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-[#1e293b]/40 text-gray-800 dark:text-slate-100 focus:ring-2 focus:ring-red-500/20 focus:border-[#b91c1c] outline-none transition disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
+                  >
+                    <option value="" disabled>Select Division</option>
+                    {divisions.map((division) => (
+                      <option key={division} value={division}>
+                        {division}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
               {/* District */}
               <div>
                 <label className="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">
@@ -197,12 +239,14 @@ export default function ProfileCard({ user }) {
                     name="district"
                     value={userData.district}
                     onChange={handleInputChange}
-                    disabled={!isEditable}
+                    disabled={!isEditable || !userData.division}
                     required
-                    className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-[#1e293b]/40 text-gray-800 dark:text-slate-100 focus:ring-2 focus:ring-red-500/20 focus:border-[#b91c1c] outline-none transition disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer capitalize"
+                    className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-[#1e293b]/40 text-gray-800 dark:text-slate-100 focus:ring-2 focus:ring-red-500/20 focus:border-[#b91c1c] outline-none transition disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
                   >
-                    <option value="" disabled>Select District</option>
-                    {districts.map((district) => (
+                    <option value="" disabled>
+                      {userData.division ? "Select District" : "Select Division First"}
+                    </option>
+                    {availableDistricts.map((district) => (
                       <option key={district} value={district}>
                         {district}
                       </option>
@@ -212,7 +256,7 @@ export default function ProfileCard({ user }) {
               </div>
 
               {/* Upazila */}
-              <div className="md:col-span-2">
+              <div>
                 <label className="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">
                   Upazila
                 </label>
@@ -224,12 +268,12 @@ export default function ProfileCard({ user }) {
                     onChange={handleInputChange}
                     disabled={!isEditable || !userData.district}
                     required
-                    className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-[#1e293b]/40 text-gray-800 dark:text-slate-100 focus:ring-2 focus:ring-red-500/20 focus:border-[#b91c1c] outline-none transition disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer capitalize"
+                    className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-[#1e293b]/40 text-gray-800 dark:text-slate-100 focus:ring-2 focus:ring-red-500/20 focus:border-[#b91c1c] outline-none transition disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
                   >
                     <option value="" disabled>
                       {userData.district ? "Select Upazila" : "Select District First"}
                     </option>
-                    {Object.keys(upazilas).map((upazila) => (
+                    {availableUpazilas.map((upazila) => (
                       <option key={upazila} value={upazila}>
                         {upazila}
                       </option>
