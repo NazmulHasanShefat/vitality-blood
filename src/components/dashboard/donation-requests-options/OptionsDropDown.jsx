@@ -4,8 +4,10 @@ import { FiEdit2, FiEye } from "react-icons/fi";
 import { TbTableOptions } from "react-icons/tb";
 import { FaRegCircleCheck } from "react-icons/fa6";
 import { updateDonationStatus } from "@/lib/actions/donationRequest";
+import { authClient } from "@/lib/auth-client";
 
 export function OptionsDrop({ requestId, request }) {
+  const {data} = authClient.useSession();
   const handleAction = async (actionName) => {
     if (actionName === "done") {
       const result = await updateDonationStatus({ status: "done" }, requestId);
@@ -27,7 +29,7 @@ export function OptionsDrop({ requestId, request }) {
       <Dropdown.Popover placement="bottom right">
         <Dropdown.Menu onAction={(key) => console.log(`Selected: ${key}`)}>
           <Dropdown.Item
-            href={`/dashboard/donor/my-requests/${requestId}`}
+            href={`/dashboard/${data?.user?.role}/my-requests/${requestId}`}
             id="new-file"
             textValue="New file"
           >
@@ -35,7 +37,7 @@ export function OptionsDrop({ requestId, request }) {
             View details
           </Dropdown.Item>
           <Dropdown.Item
-            href={`/dashboard/donor/my-requests/edit-request/${requestId}`}
+            href={`/dashboard/${data?.user?.role}/my-requests/edit-request/${requestId}`}
             id="copy-link"
             textValue="Copy link"
           >

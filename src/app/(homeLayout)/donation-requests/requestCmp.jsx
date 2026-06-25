@@ -4,13 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Card, Link } from "@heroui/react";
 // React Icons
 import { BiFilterAlt, BiMap } from "react-icons/bi";
-import {
-  FiPlus,
-  FiGrid,
-  FiList,
-  FiChevronLeft,
-  FiChevronRight,
-} from "react-icons/fi";
+import { FiGrid, FiList, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import {
   HiOutlineLocationMarker,
   HiOutlineCalendar,
@@ -18,6 +12,7 @@ import {
 } from "react-icons/hi";
 import { MdOutlineMessage, MdVerifiedUser } from "react-icons/md";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { districts, divisions } from "@/context/address";
 
 // Dummy datasets based on your requirement to map
 const bloodGroups = [
@@ -31,14 +26,14 @@ const bloodGroups = [
   "AB+",
   "AB-",
 ];
-const districts = ["Dhaka", "Chittagong", "Rajshahi", "Sylhet", "Khulna"];
-const upazilas = ["Mirpur", "Gulshan", "Dhanmondi", "Uttara", "Banani"];
+
+
 
 export default function FindLifeSaver({ pedingRequests, user }) {
   const [loading, setLoading] = useState(false);
   const [blood, setblood] = useState("");
   const [district, setdistrict] = useState("");
-  const [upazila, setupazila] = useState("");
+  const [divition, setdivition] = useState("");
 
   const router = useRouter();
   const pathName = usePathname();
@@ -46,15 +41,14 @@ export default function FindLifeSaver({ pedingRequests, user }) {
 
   console.log(blood);
   const applyFilter = () => {
-    
-     if(blood || district || upazila){
-       const urlParams = new URLSearchParams(searchParams);
-         urlParams.set("blood", blood);
-         urlParams.set("district", district);
-         urlParams.set("upazila", upazila);
-       router.push(`${pathName}?${urlParams.toString()}`);
-       setLoading(true);
-     }
+    if (blood || district || upazila) {
+      const urlParams = new URLSearchParams(searchParams);
+      urlParams.set("blood", encodeURIComponent(blood));
+      urlParams.set("divition", divition);
+      urlParams.set("district", district);
+      router.push(`${pathName}?${urlParams.toString()}`);
+      setLoading(true);
+    }
   };
 
   useEffect(() => {
@@ -102,6 +96,30 @@ export default function FindLifeSaver({ pedingRequests, user }) {
               </div>
             </div>
 
+            {/* Upazila Dropdown */}
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+                Divition
+              </label>
+              <div className="relative">
+                <select
+                  onChange={(e) => setdivition(e.target.value)}
+                  className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg pl-9 pr-8 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-red-600 appearance-none cursor-pointer"
+                >
+                  <option value="">Select Divition</option>
+                  {divisions.map((upazila, index) => (
+                    <option key={index} value={upazila}>
+                      {upazila}
+                    </option>
+                  ))}
+                </select>
+                <BiMap className="absolute left-3 top-3.5 text-slate-400 text-base" />
+                <span className="absolute right-3 top-3.5 pointer-events-none text-xs text-slate-400">
+                  ▼
+                </span>
+              </div>
+            </div>
+
             {/* District Dropdown */}
             <div className="flex flex-col gap-1.5">
               <label className="text-xs font-semibold text-slate-500 dark:text-slate-400">
@@ -116,30 +134,6 @@ export default function FindLifeSaver({ pedingRequests, user }) {
                   {districts.map((district, index) => (
                     <option key={index} value={district}>
                       {district}
-                    </option>
-                  ))}
-                </select>
-                <BiMap className="absolute left-3 top-3.5 text-slate-400 text-base" />
-                <span className="absolute right-3 top-3.5 pointer-events-none text-xs text-slate-400">
-                  ▼
-                </span>
-              </div>
-            </div>
-
-            {/* Upazila Dropdown */}
-            <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-semibold text-slate-500 dark:text-slate-400">
-                Upazila
-              </label>
-              <div className="relative">
-                <select
-                  onChange={(e) => setupazila(e.target.value)}
-                  className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg pl-9 pr-8 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-red-600 appearance-none cursor-pointer"
-                >
-                  <option value="">Select Upazila</option>
-                  {upazilas.map((upazila, index) => (
-                    <option key={index} value={upazila}>
-                      {upazila}
                     </option>
                   ))}
                 </select>
