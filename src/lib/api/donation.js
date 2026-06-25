@@ -30,9 +30,9 @@ export const getFilterDonorDonationRequest = async (requesterId, searchWord, pag
         console.log(error)
     }
 }
-export const getallDonationRequest = async (filter)=>{
+export const getallDonationRequest = async (filter, page)=>{
       try {
-        return await protectedFetch(`/api/all-donation-requests?searchQuery=${filter}`);
+        return await protectedFetch(`/api/all-donation-requests?searchQuery=${filter}&page=${page}`);
     } catch (error) {
         console.log(error)
     }
