@@ -23,9 +23,9 @@ export const getRecentDonorDonationRequest = async (requesterId)=>{
         console.log(error)
     }
 }
-export const getFilterDonorDonationRequest = async (requesterId, searchWord)=>{
+export const getFilterDonorDonationRequest = async (requesterId, searchWord, page)=>{
       try {
-        return await protectedFetch(`/api/filter-donation-request/${requesterId}?searchQuery=${searchWord}`);
+        return await protectedFetch(`/api/filter-donation-request/${requesterId}?searchQuery=${searchWord}&page=${page || 1}`);
     } catch (error) {
         console.log(error)
     }

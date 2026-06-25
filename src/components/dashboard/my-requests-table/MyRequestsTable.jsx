@@ -15,6 +15,10 @@ import DeleteConfirmModal from "@/components/dashboard/deleteModal/DeleteConfirm
 import { OptionsDrop } from "@/components/dashboard/donation-requests-options/OptionsDropDown";
 
 export default function DonationRequestTable({ donorRequests = [] }) {
+
+  const allDonorRequests = donorRequests?.data;
+  console.log(donorRequests)
+
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -101,7 +105,7 @@ export default function DonationRequestTable({ donorRequests = [] }) {
           {/* ১. মোবাইল রেসপনসিভ কার্ড ভিউ (ছোট স্ক্রিনে কার্ড আকারে দেখাবে) */}
           {/* ========================================================================= */}
           <div className="block md:hidden divide-y divide-gray-100 dark:divide-gray-800/60">
-            {donorRequests.map((request) => {
+            {allDonorRequests.map((request) => {
               const requestId = request?._id;
               return (
                 <div
@@ -232,7 +236,7 @@ export default function DonationRequestTable({ donorRequests = [] }) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-gray-800/60 text-sm">
-                {donorRequests.map((request) => {
+                {allDonorRequests.map((request) => {
                   const requestId = request?._id;
                   return (
                     <tr
