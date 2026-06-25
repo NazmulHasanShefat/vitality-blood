@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Suspense, use, useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Card, Link } from "@heroui/react";
 // React Icons
 import { BiFilterAlt, BiMap } from "react-icons/bi";
@@ -12,11 +12,11 @@ import {
 } from "react-icons/hi";
 import { MdOutlineMessage, MdVerifiedUser } from "react-icons/md";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { districts, divisions } from "@/context/address";
+// Import the dynamic mapping dictionary from context
+import { divisions, divisionsWithDistricts } from "@/context/address";
 import RequestCard from "./RequestCard";
 import BloodLoadingSpinner from "@/components/ui/Loading";
 
-// Dummy datasets based on your requirement to map
 const bloodGroups = [
   "All Groups",
   "A+",
@@ -39,15 +39,31 @@ export default function FindLifeSaver({ pedingRequests, user }) {
   const pathName = usePathname();
   const searchParams = useSearchParams();
 
-  console.log(blood);
+  // Get matching districts dynamically based on the current selection of divition
+  const filteredDistricts = divition ? divisionsWithDistricts[divition] || [] : [];
+
   const applyFilter = () => {
+    // 1. Start the loading state indicator
+    setLoading(true); 
+    
     if (blood || district || divition) {
       const urlParams = new URLSearchParams(searchParams);
-      urlParams.set("blood", encodeURIComponent(blood));
-      urlParams.set("divition", divition);
-      urlParams.set("district", district);
+      
+      // Handle "All Groups" selection to clear the filter if selected
+      if (blood && blood !== "All Groups") {
+        urlParams.set("blood", encodeURIComponent(blood));
+      } else {
+        urlParams.delete("blood");
+      }
+      
+      if (divition) urlParams.set("divition", divition); else urlParams.delete("divition");
+      if (district) urlParams.set("district", district); else urlParams.delete("district");
+      
+      // 2. Trigger the router push; useEffect will automatically reset loading to false on completion
       router.push(`${pathName}?${urlParams.toString()}`);
-      setLoading(true);
+    } else {
+      // 3. Turn off loading immediately if no filters are selected
+      setLoading(false);
     }
   };
 
@@ -96,20 +112,24 @@ export default function FindLifeSaver({ pedingRequests, user }) {
               </div>
             </div>
 
-            {/* Upazila Dropdown */}
+            {/* Division Dropdown */}
             <div className="flex flex-col gap-1.5">
               <label className="text-xs font-semibold text-slate-500 dark:text-slate-400">
-                Divition
+                Division
               </label>
               <div className="relative">
                 <select
-                  onChange={(e) => setdivition(e.target.value)}
+                  onChange={(e) => {
+                    setdivition(e.target.value);
+                    setdistrict(""); // Reset district value whenever division changes
+                  }}
+                  value={divition}
                   className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg pl-9 pr-8 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-red-600 appearance-none cursor-pointer"
                 >
-                  <option value="">Select Divition</option>
-                  {divisions.map((upazila, index) => (
-                    <option key={index} value={upazila}>
-                      {upazila}
+                  <option value="">Select Division</option>
+                  {divisions.map((div, index) => (
+                    <option key={index} value={div}>
+                      {div}
                     </option>
                   ))}
                 </select>
@@ -128,12 +148,14 @@ export default function FindLifeSaver({ pedingRequests, user }) {
               <div className="relative">
                 <select
                   onChange={(e) => setdistrict(e.target.value)}
-                  className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg pl-9 pr-8 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-red-600 appearance-none cursor-pointer"
+                  value={district}
+                  disabled={!divition} // Prevent user interaction until division is selected
+                  className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg pl-9 pr-8 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-red-600 appearance-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <option value="">Select District</option>
-                  {districts.map((district, index) => (
-                    <option key={index} value={district}>
-                      {district}
+                  {filteredDistricts.map((dist, index) => (
+                    <option key={index} value={dist}>
+                      {dist}
                     </option>
                   ))}
                 </select>
@@ -147,10 +169,11 @@ export default function FindLifeSaver({ pedingRequests, user }) {
             {/* Filter Apply Button */}
             <button
               onClick={applyFilter}
-              className="w-full flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white font-medium py-2.5 rounded-lg transition-colors shadow-sm"
+              disabled={loading}
+              className="w-full flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white font-medium py-2.5 rounded-lg transition-colors shadow-sm disabled:opacity-70 disabled:cursor-not-allowed"
             >
               <BiFilterAlt />
-              <span>Apply Filters</span>
+              <span>{loading ? "Applying..." : "Apply Filters"}</span>
             </button>
           </div>
         </div>
