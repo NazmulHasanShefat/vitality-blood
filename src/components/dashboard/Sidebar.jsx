@@ -108,13 +108,13 @@ export default function Sidebar({ user }) {
           </div>
         </Link>
 
-        {/* রেজিস্টার ডোনার বাটন (ছবির মতন রেড ব্যাকগ্রাউন্ড ও প্লাস আইকন) */}
+      
         <button
           type="button"
           className="w-full bg-[#b91c1c] hover:bg-[#991b1b] text-white py-2.5 px-4 rounded-xl font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-md shadow-red-900/10 active:scale-[0.98] dark:bg-[#b91c1c] dark:hover:bg-[#a11818]"
         >
           <FiPlusCircle className="text-base" />
-          Register Donor
+          {user?.role}
         </button>
 
         {/* নেভিগেশন লিংক মেনু */}

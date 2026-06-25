@@ -4,12 +4,14 @@ import { Card } from "@heroui/react";
 // ব্লাড ডোনেশন প্রজেক্টের সাথে মানানসই ৩টি আইকন নেওয়া হয়েছে
 import { FiUsers, FiDollarSign, FiHeart } from "react-icons/fi";
 
-export default function DashboardStats({ statsData, userData }) {
+export default function DashboardStats({ allStates, user }) {
   // প্রপ্স থেকে ডাইনামিক ডাটা রিসিভ করা হচ্ছে (ডিফল্ট ফলব্যাক ভ্যালুসহ)
-  const totalDonors = statsData?.totalDonors || 12850;
-  const totalFunding = statsData?.totalFunding || 42500;
-  const totalRequests = statsData?.totalRequests || 18;
-  const userName = userData?.name || "User";
+  const totalDonors = allStates?.total_active_users || 0;
+  const totalFunding = allStates?.totalFunds|| 0;
+  const totalRequests = allStates?.totalRequests || 0;
+  const userName = user?.name || "User";
+
+
 
   return (
     <div className="w-full space-y-8 p-6 bg-slate-50 dark:bg-[#0b0f19] min-h-screen transition-colors duration-300">

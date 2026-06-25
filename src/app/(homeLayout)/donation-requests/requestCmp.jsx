@@ -31,7 +31,7 @@ const bloodGroups = [
 ];
 
 export default function FindLifeSaver({ pedingRequests, user }) {
-  const myDataInfo = use(pedingRequests)
+  const myDataInfo = use(pedingRequests);
   const total = myDataInfo?.pagination?.totalPages;
 
   const [loading, setLoading] = useState(false);
@@ -44,25 +44,29 @@ export default function FindLifeSaver({ pedingRequests, user }) {
   const searchParams = useSearchParams();
 
   // Get matching districts dynamically based on the current selection of divition
-  const filteredDistricts = divition ? divisionsWithDistricts[divition] || [] : [];
+  const filteredDistricts = divition
+    ? divisionsWithDistricts[divition] || []
+    : [];
 
   const applyFilter = () => {
     // 1. Start the loading state indicator
-    setLoading(true); 
-    
+    setLoading(true);
+
     if (blood || district || divition) {
       const urlParams = new URLSearchParams(searchParams);
-      
+
       // Handle "All Groups" selection to clear the filter if selected
       if (blood && blood !== "All Groups") {
         urlParams.set("blood", encodeURIComponent(blood));
       } else {
         urlParams.delete("blood");
       }
-      
-      if (divition) urlParams.set("divition", divition); else urlParams.delete("divition");
-      if (district) urlParams.set("district", district); else urlParams.delete("district");
-      
+
+      if (divition) urlParams.set("divition", divition);
+      else urlParams.delete("divition");
+      if (district) urlParams.set("district", district);
+      else urlParams.delete("district");
+
       // 2. Trigger the router push; useEffect will automatically reset loading to false on completion
       router.push(`${pathName}?${urlParams.toString()}`);
     } else {
@@ -213,10 +217,7 @@ export default function FindLifeSaver({ pedingRequests, user }) {
         </div>
 
         {/* Pagination Section */}
-
-
-  <AllPagination totalPage={total}/>
-      
+        <AllPagination totalPage={total} />
       </div>
     </div>
   );
