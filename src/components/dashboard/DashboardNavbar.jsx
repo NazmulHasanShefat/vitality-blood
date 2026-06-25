@@ -63,7 +63,7 @@ export default async function DashboardNavbar() {
        
           <div className="relative h-10 w-10 rounded-full border-2 border-[#b91c1c] overflow-hidden shadow-sm">
             <Image
-              src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=150&q=80"
+              src={user?.image || "https://img.magnific.com/free-psd/contact-icon-illustration-isolated_23-2151903337.jpg?t=st=1782361399~exp=1782364999~hmac=06e26bcc29aaf9c5e32ec4c481ca8459572133eb165197f4f132212bc9236cfc&w=1060"}
               alt="Dr. Sarah Vance Profile"
               fill
               sizes="40px"

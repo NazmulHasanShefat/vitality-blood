@@ -1,5 +1,6 @@
 "use client";
 
+import { districts, divisions, upazilas } from "@/context/address";
 import { CreateUser } from "@/lib/actions/user";
 import { authClient, signUp } from "@/lib/auth-client";
 import { uploadImage } from "@/lib/uploads/imageUpload";
@@ -24,13 +25,14 @@ const RegisterForm = () => {
     name: "",
     email: "",
     bloodGroup: "",
+    division: "",
     district: "",
     upazila: "",
     password: "",
     confirmPassword: "",
   });
 
-  const [avatarUrl, setAvatarUrl] = useState("fasdf");
+  const [avatarUrl, setAvatarUrl] = useState("");
   const [uploading, setUploading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -38,586 +40,7 @@ const RegisterForm = () => {
   const [success, setSuccess] = useState("");
 
   const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
-  const districts = [
-    "Dhaka",
-    "Chattogram",
-    "Rajshahi",
-    "Khulna",
-    "Sylhet",
-    "Barishal",
-    "Rangpur",
-    "Mymensingh",
-  ];
-  const upazilas = {
-    Bagerhat: [
-      "Bagerhat Sadar",
-      "Chitalmari",
-      "Fakirhat",
-      "Kachua",
-      "Mollahat",
-      "Mongla",
-      "Morrelganj",
-      "Rampal",
-      "Sarankhola",
-    ],
-    Bandarban: [
-      "Alikadam",
-      "Bandarban Sadar",
-      "Lama",
-      "Naikhongchhari",
-      "Rowangchhari",
-      "Ruma",
-      "Thanchi",
-    ],
-    Barguna: [
-      "Amtali",
-      "Bamna",
-      "Barguna Sadar",
-      "Betagi",
-      "Patharghata",
-      "Taltali",
-    ],
-    Barishal: [
-      "Agailjhara",
-      "Babuganj",
-      "Bakerganj",
-      "Banaripara",
-      "Barishal Sadar",
-      "Gaurnadi",
-      "Hizla",
-      "Mehendiganj",
-      "Muladi",
-      "Wazirpur",
-    ],
-    Bhola: [
-      "Bhola Sadar",
-      "Burhanuddin",
-      "Char Fasson",
-      "Daulatkhan",
-      "Lalmohan",
-      "Manpura",
-      "Tazumuddin",
-    ],
-    Bogura: [
-      "Adamdighi",
-      "Bogura Sadar",
-      "Dhunat",
-      "Dhupchanchia",
-      "Gabtali",
-      "Kahaloo",
-      "Nandigram",
-      "Sariakandi",
-      "Shajahanpur",
-      "Sherpur",
-      "Shibganj",
-      "Sonatala",
-    ],
-    Brahmanbaria: [
-      "Akhaura",
-      "Ashuganj",
-      "Bancharampur",
-      "Bijoynagar",
-      "Brahmanbaria Sadar",
-      "Kasba",
-      "Nabinagar",
-      "Nasirnagar",
-      "Sarail",
-    ],
-    Chandpur: [
-      "Chandpur Sadar",
-      "Faridganj",
-      "Haimchar",
-      "Haziganj",
-      "Kachua",
-      "Matlab Dakshin",
-      "Matlab Uttar",
-      "Shahrasti",
-    ],
-    "Chapai Nawabganj": [
-      "Bholahat",
-      "Chapai Nawabganj Sadar",
-      "Gomastapur",
-      "Nachole",
-      "Shibganj",
-    ],
-    Chattogram: [
-      "Anwara",
-      "Banshkhali",
-      "Boalkhali",
-      "Chandanaish",
-      "Chattogram Sadar",
-      "Fatikchhari",
-      "Hathazari",
-      "Karnaphuli",
-      "Lohagara",
-      "Mirsharai",
-      "Patiya",
-      "Rangunia",
-      "Raozan",
-      "Sandwip",
-      "Satkania",
-      "Sitakunda",
-    ],
-    Chuadanga: ["Alamdanga", "Chuadanga Sadar", "Damurhuda", "Jibannagar"],
-    "Cox's Bazar": [
-      "Chakaria",
-      "Cox's Bazar Sadar",
-      "Kutubdia",
-      "Maheshkhali",
-      "Pekua",
-      "Ramu",
-      "Teknaf",
-      "Ukhia",
-    ],
-    Cumilla: [
-      "Barura",
-      "Brahmanpara",
-      "Burichang",
-      "Chandina",
-      "Chauddagram",
-      "Cumilla Adarsha Sadar",
-      "Cumilla Sadar Dakshin",
-      "Daudkandi",
-      "Debidwar",
-      "Homna",
-      "Laksam",
-      "Lalmai",
-      "Meghna",
-      "Monohorgonj",
-      "Muradnagar",
-      "Nangalkot",
-      "Titas",
-    ],
-    Dhaka: ["Dhamrai", "Dohar", "Keraniganj", "Nawabganj", "Savar"],
-    Dinajpur: [
-      "Birampur",
-      "Birganj",
-      "Biral",
-      "Bochaganj",
-      "Chirirbandar",
-      "Dinajpur Sadar",
-      "Fulbari",
-      "Ghoraghat",
-      "Hakimpur",
-      "Kaharole",
-      "Khansama",
-      "Nawabganj",
-      "Parbatipur",
-    ],
-    Faridpur: [
-      "Alfadanga",
-      "Bhanga",
-      "Boalmari",
-      "Charbhadrasan",
-      "Faridpur Sadar",
-      "Madhukhali",
-      "Nagarkanda",
-      "Sadarpur",
-      "Saltha",
-    ],
-    Feni: [
-      "Chhagalnaiya",
-      "Daganbhuiyan",
-      "Feni Sadar",
-      "Fulgazi",
-      "Parshuram",
-      "Sonagazi",
-    ],
-    Gaibandha: [
-      "Fulchhari",
-      "Gaibandha Sadar",
-      "Gobindaganj",
-      "Palashbari",
-      "Sadullapur",
-      "Saghata",
-      "Sundarganj",
-    ],
-    Gazipur: ["Gazipur Sadar", "Kaliakair", "Kaliganj", "Kapasia", "Sreepur"],
-    Gopalganj: [
-      "Gopalganj Sadar",
-      "Kashiani",
-      "Kotalipara",
-      "Muksudpur",
-      "Tungipara",
-    ],
-    Habiganj: [
-      "Ajmiriganj",
-      "Baniachong",
-      "Bahubal",
-      "Chunarughat",
-      "Habiganj Sadar",
-      "Lakhai",
-      "Madhabpur",
-      "Nabiganj",
-    ],
-    Jamalpur: [
-      "Bakshiganj",
-      "Dewanganj",
-      "Islampur",
-      "Jamalpur Sadar",
-      "Madarganj",
-      "Melandaha",
-      "Sarishabari",
-    ],
-    Jashore: [
-      "Abhaynagar",
-      "Bagherpara",
-      "Chaugachha",
-      "Jashore Sadar",
-      "Jhikargachha",
-      "Keshabpur",
-      "Manirampur",
-      "Sharsha",
-    ],
-    Jhalokati: ["Jhalokati Sadar", "Kathalia", "Nalchity", "Rajapur"],
-    Jhenaidah: [
-      "Harinakunda",
-      "Jhenaidah Sadar",
-      "Kaliganj",
-      "Kotchandpur",
-      "Maheshpur",
-      "Shailkupa",
-    ],
-    Joypurhat: ["Akkelpur", "Joypurhat Sadar", "Kalai", "Khetlal", "Panchbibi"],
-    Khagrachari: [
-      "Baghaichhari",
-      "Dighinala",
-      "Guimara",
-      "Khagrachari Sadar",
-      "Lakshmichhari",
-      "Mahalchhari",
-      "Manikchhari",
-      "Matiranga",
-      "Panchhari",
-      "Ramgarh",
-    ],
-    Khulna: [
-      "Batiaghata",
-      "Dacope",
-      "Dighalia",
-      "Dumuria",
-      "Koyra",
-      "Paikgachha",
-      "Phultala",
-      "Rupsa",
-      "Terokhada",
-    ],
-    Kishoreganj: [
-      "Austagram",
-      "Bajitpur",
-      "Bhairab",
-      "Hossainpur",
-      "Itna",
-      "Karimganj",
-      "Katiadi",
-      "Kishoreganj Sadar",
-      "Kuliarchar",
-      "Mithamain",
-      "Nikli",
-      "Pakundia",
-      "Tarail",
-    ],
-    Kurigram: [
-      "Bhurungamari",
-      "Char Rajibpur",
-      "Chilmari",
-      "Fulbari",
-      "Kurigram Sadar",
-      "Nageshwari",
-      "Rajarhat",
-      "Raumari",
-      "Ulipur",
-    ],
-    Kushtia: [
-      "Bheramara",
-      "Daulatpur",
-      "Khoksa",
-      "Kumarkhali",
-      "Kushtia Sadar",
-      "Mirpur",
-    ],
-    Lakshmipur: [
-      "Kamalnagar",
-      "Lakshmipur Sadar",
-      "Ramganj",
-      "Ramgati",
-      "Raipur",
-    ],
-    Lalmonirhat: [
-      "Aditmari",
-      "Hatibandha",
-      "Kaliganj",
-      "Lalmonirhat Sadar",
-      "Patgram",
-    ],
-    Madaripur: ["Kalkini", "Madaripur Sadar", "Rajoir", "Shibchar"],
-    Magura: ["Magura Sadar", "Mohammadpur", "Shalikha", "Sreepur"],
-    Manikganj: [
-      "Daulatpur",
-      "Ghior",
-      "Harirampur",
-      "Manikganj Sadar",
-      "Saturia",
-      "Shivalaya",
-      "Singair",
-    ],
-    Meherpur: ["Gangni", "Meherpur Sadar", "Mujibnagar"],
-    Moulvibazar: [
-      "Barlekha",
-      "Juri",
-      "Kamalganj",
-      "Kulaura",
-      "Moulvibazar Sadar",
-      "Rajnagar",
-      "Sreemangal",
-    ],
-    Munshiganj: [
-      "Gazaria",
-      "Louhajang",
-      "Munshiganj Sadar",
-      "Sirajdikhan",
-      "Sreenagar",
-      "Tongibari",
-    ],
-    Mymensingh: [
-      "Bhaluka",
-      "Dhobaura",
-      "Fulbaria",
-      "Gaffargaon",
-      "Gauripur",
-      "Haluaghat",
-      "Ishwarganj",
-      "Muktagachha",
-      "Mymensingh Sadar",
-      "Nandail",
-      "Phulpur",
-      "Trishal",
-    ],
-    Naogaon: [
-      "Atrai",
-      "Badalgachhi",
-      "Dhamoirhat",
-      "Manda",
-      "Mahadebpur",
-      "Naogaon Sadar",
-      "Niamatpur",
-      "Patnitala",
-      "Porsha",
-      "Raninagar",
-      "Sapahar",
-    ],
-    Narail: ["Kalia", "Lohagara", "Narail Sadar"],
-    Narayanganj: [
-      "Araihazar",
-      "Bandar",
-      "Narayanganj Sadar",
-      "Rupganj",
-      "Sonargaon",
-    ],
-    Narsingdi: [
-      "Belabo",
-      "Monohardi",
-      "Narsingdi Sadar",
-      "Palash",
-      "Raipura",
-      "Shibpur",
-    ],
-    Natore: [
-      "Bagatipara",
-      "Baraigram",
-      "Gurudaspur",
-      "Lalpur",
-      "Natore Sadar",
-      "Singra",
-    ],
-    Netrokona: [
-      "Atpara",
-      "Barhatta",
-      "Durgapur",
-      "Kalmakanda",
-      "Kendua",
-      "Khaliajuri",
-      "Madan",
-      "Mohanganj",
-      "Netrokona Sadar",
-      "Purbadhala",
-    ],
-    Nilphamari: [
-      "Dimla",
-      "Domar",
-      "Jaldhaka",
-      "Kishoreganj",
-      "Nilphamari Sadar",
-      "Saidpur",
-    ],
-    Noakhali: [
-      "Begumganj",
-      "Chatkhil",
-      "Companiganj",
-      "Hatiya",
-      "Kabir Hat",
-      "Noakhali Sadar",
-      "Senbagh",
-      "Sonaimuri",
-      "Subarna Char",
-    ],
-    Pabna: [
-      "Atgharia",
-      "Bera",
-      "Bhangura",
-      "Chatmohar",
-      "Faridpur",
-      "Ishwardi",
-      "Pabna Sadar",
-      "Santhia",
-      "Sujanagar",
-    ],
-    Panchagarh: ["Atwari", "Boda", "Debiganj", "Panchagarh Sadar", "Tetulia"],
-    Patuakhali: [
-      "Bauphal",
-      "Dashmina",
-      "Dumki",
-      "Galachipa",
-      "Kalapara",
-      "Mirzaganj",
-      "Patuakhali Sadar",
-      "Rangabali",
-    ],
-    Pirojpur: [
-      "Bhandaria",
-      "Kawkhali",
-      "Mathbaria",
-      "Nazirpur",
-      "Nesarabad",
-      "Pirojpur Sadar",
-      "Zianagar",
-    ],
-    Rajbari: [
-      "Baliakandi",
-      "Goalandaghat",
-      "Kalukhali",
-      "Pangsha",
-      "Rajbari Sadar",
-    ],
-    Rajshahi: [
-      "Bagha",
-      "Bagmara",
-      "Charghat",
-      "Durgapur",
-      "Godagari",
-      "Mohanpur",
-      "Paba",
-      "Puthia",
-      "Rajshahi Sadar",
-      "Tanore",
-    ],
-    Rangamati: [
-      "Bagaichhari",
-      "Barkal",
-      "Belaichhari",
-      "Juraichhari",
-      "Kaptai",
-      "Kawkhali",
-      "Langadu",
-      "Naniarchar",
-      "Rajasthali",
-      "Rangamati Sadar",
-    ],
-    Rangpur: [
-      "Badarganj",
-      "Gangachara",
-      "Kaunia",
-      "Mithapukur",
-      "Pirgachha",
-      "Pirganj",
-      "Rangpur Sadar",
-      "Taraganj",
-    ],
-    Satkhira: [
-      "Assasuni",
-      "Debhata",
-      "Kalaroa",
-      "Kaliganj",
-      "Satkhira Sadar",
-      "Shyamnagar",
-      "Tala",
-    ],
-    Shariatpur: [
-      "Bhedarganj",
-      "Damudya",
-      "Gosairhat",
-      "Naria",
-      "Shariatpur Sadar",
-      "Zanjira",
-    ],
-    Sherpur: [
-      "Jhenaigati",
-      "Nakla",
-      "Nalitabari",
-      "Sherpur Sadar",
-      "Sreebardi",
-    ],
-    Sirajganj: [
-      "Belkuchi",
-      "Chauhali",
-      "Enayetpur",
-      "Kamarkhand",
-      "Kazipur",
-      "Raiganj",
-      "Shahjadpur",
-      "Sirajganj Sadar",
-      "Tarash",
-      "Ullapara",
-    ],
-    Sunamganj: [
-      "Bishwamvarpur",
-      "Chhatak",
-      "Derai",
-      "Dharampasha",
-      "Dowarabazar",
-      "Jagannathpur",
-      "Jamalganj",
-      "Sulla",
-      "Sunamganj Sadar",
-      "Tahirpur",
-    ],
-    Sylhet: [
-      "Balaganj",
-      "Beanibazar",
-      "Bishwanath",
-      "Companiganj",
-      "Fenchuganj",
-      "Golapganj",
-      "Gowainghat",
-      "Jaintiapur",
-      "Kanaighat",
-      "Osmani Nagar",
-      "South Surma",
-      "Sylhet Sadar",
-      "Zakiganj",
-    ],
-    Tangail: [
-      "Basail",
-      "Bhuapur",
-      "Delduar",
-      "Dhanbari",
-      "Ghatail",
-      "Gopalpur",
-      "Kalihati",
-      "Madhupur",
-      "Mirzapur",
-      "Nagarpur",
-      "Sakhipur",
-      "Tangail Sadar",
-    ],
-    Thakurgaon: [
-      "Baliadangi",
-      "Haripur",
-      "Pirganj",
-      "Ranisankail",
-      "Thakurgaon Sadar",
-    ],
-  };
+
   const router = useRouter();
 
   const handleChange = (e) => {
@@ -635,16 +58,6 @@ const RegisterForm = () => {
     imageFormData.append("image", file);
 
     try {
-      //   const IMGBB_API_KEY = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
-      //   const response = await fetch(
-      //     `https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`,
-      //     {
-      //       method: "POST",
-      //       body: imageFormData,
-      //     },
-      //   );
-
-      //   const data = await response.json();
       const data = await uploadImage(imageFormData);
       console.log(data);
       if (data.success) {
@@ -684,9 +97,10 @@ const RegisterForm = () => {
         image: avatarUrl,
         status: "active",
         bloodGroup: formData.bloodGroup,
+        division: formData.division,
         district: formData.district,
         upazila: formData.upazila,
-      }
+      },
     });
 
     console.log(result);
@@ -793,8 +207,41 @@ const RegisterForm = () => {
           </div>
         </div>
 
-        {/* ব্লাড গ্রুপ ও ডিস্ট্রিক্ট */}
+        {/* বিভাগ ও ব্লাড গ্রুপ */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-semibold mb-1.5 text-gray-700 dark:text-gray-300">
+              Division
+            </label>
+            <div className="relative">
+              <FiMapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg z-10" />
+              <select
+                name="division"
+                required
+                value={formData.division}
+                onChange={handleChange}
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white text-gray-800 dark:bg-[#1e293b] dark:text-slate-100 focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition appearance-none"
+              >
+                <option
+                  value=""
+                  disabled
+                  className="bg-white text-gray-800 dark:bg-[#1e293b] dark:text-slate-100"
+                >
+                  Select Division
+                </option>
+                {divisions.map((division) => (
+                  <option
+                    key={division}
+                    value={division}
+                    className="bg-white text-gray-800 dark:bg-[#1e293b] dark:text-slate-100"
+                  >
+                    {division}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
           <div>
             <label className="block text-sm font-semibold mb-1.5 text-gray-700 dark:text-gray-300">
               Blood Group
@@ -827,38 +274,39 @@ const RegisterForm = () => {
               </select>
             </div>
           </div>
+        </div>
 
-          <div>
-            <label className="block text-sm font-semibold mb-1.5 text-gray-700 dark:text-gray-300">
-              District
-            </label>
-            <div className="relative">
-              <FiMapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg z-10" />
-              <select
-                name="district"
-                required
-                value={formData.district}
-                onChange={handleChange}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white text-gray-800 dark:bg-[#1e293b] dark:text-slate-100 focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition appearance-none"
+        {/* ডিস্ট্রিক্ট */}
+        <div>
+          <label className="block text-sm font-semibold mb-1.5 text-gray-700 dark:text-gray-300">
+            District
+          </label>
+          <div className="relative">
+            <FiMapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg z-10" />
+            <select
+              name="district"
+              required
+              value={formData.district}
+              onChange={handleChange}
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white text-gray-800 dark:bg-[#1e293b] dark:text-slate-100 focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition appearance-none"
+            >
+              <option
+                value=""
+                disabled
+                className="bg-white text-gray-800 dark:bg-[#1e293b] dark:text-slate-100"
               >
+                Select District
+              </option>
+              {districts.map((district) => (
                 <option
-                  value=""
-                  disabled
+                  key={district}
+                  value={district}
                   className="bg-white text-gray-800 dark:bg-[#1e293b] dark:text-slate-100"
                 >
-                  Select District
+                  {district}
                 </option>
-                {districts.map((district) => (
-                  <option
-                    key={district}
-                    value={district}
-                    className="bg-white text-gray-800 dark:bg-[#1e293b] dark:text-slate-100"
-                  >
-                    {district}
-                  </option>
-                ))}
-              </select>
-            </div>
+              ))}
+            </select>
           </div>
         </div>
 
@@ -898,7 +346,7 @@ const RegisterForm = () => {
           </div>
         </div>
 
-        {/* পাসওয়ার্ড ও কনফার্ম পাসওয়ার্ড */}
+        {/* পাসওয়ার্ড ও কনফার্ম পাসওয়ার্ড */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-semibold mb-1.5 text-gray-700 dark:text-gray-300">

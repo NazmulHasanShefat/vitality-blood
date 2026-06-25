@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { FiUser, FiMail, FiMapPin, FiDroplet, FiEdit3, FiCheckCircle, FiXCircle } from "react-icons/fi";
+import { districts, upazilas } from "@/context/address";
 
 // বাংলাদেশর জেলা ও উপজেলার ডাটা সোর্স
 const bdLocationData = {
@@ -76,7 +77,7 @@ export default function ProfileCard({ user }) {
           {/* Profile Image Avatar (সেন্টার করার জন্য মার্জিন অটো ও মাইনাস মার্জিন ব্যালেন্স করা হয়েছে) */}
           <div className="relative h-28 w-28 -mt-14 rounded-full border-4 border-white dark:border-[#111827] overflow-hidden bg-slate-100 dark:bg-slate-800 shadow-md z-10">
             <Image
-              src={userData.avatar}
+              src={user?.image}
               alt={`${userData.name}'s Profile Avatar`}
               fill
               className="object-cover"
@@ -201,7 +202,7 @@ export default function ProfileCard({ user }) {
                     className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-[#1e293b]/40 text-gray-800 dark:text-slate-100 focus:ring-2 focus:ring-red-500/20 focus:border-[#b91c1c] outline-none transition disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer capitalize"
                   >
                     <option value="" disabled>Select District</option>
-                    {Object.keys(bdLocationData).map((district) => (
+                    {districts.map((district) => (
                       <option key={district} value={district}>
                         {district}
                       </option>
@@ -228,7 +229,7 @@ export default function ProfileCard({ user }) {
                     <option value="" disabled>
                       {userData.district ? "Select Upazila" : "Select District First"}
                     </option>
-                    {availableUpazilas.map((upazila) => (
+                    {Object.keys(upazilas).map((upazila) => (
                       <option key={upazila} value={upazila}>
                         {upazila}
                       </option>

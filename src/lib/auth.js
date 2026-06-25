@@ -27,6 +27,9 @@ export const auth = betterAuth({
       bloodGroup: {
         default: "N/A",
       },
+      division: {
+        default: "N/A",
+      },
       district: {
         default: "N/A",
       },

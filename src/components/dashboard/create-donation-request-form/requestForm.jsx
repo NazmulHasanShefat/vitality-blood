@@ -4,6 +4,7 @@
 import { divisions, divisionsWithDistricts, upazilas } from "@/context/address";
 import { createDonationRequest } from "@/lib/actions/donationRequest";
 import { toast } from "@heroui/react";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import {
   FiUser,
@@ -18,6 +19,8 @@ import {
 } from "react-icons/fi";
 
 export default function CreateDonationRequest({ user }) {
+  const [pending, setPending] = useState(false)
+  const router = useRouter();
   // Mock logged-in user data context
   const loggedInUser = {
     name: user?.name,
@@ -35,6 +38,7 @@ export default function CreateDonationRequest({ user }) {
   // Process data retrieval dynamically via FormData upon submit execution
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setPending(true)
 
     const formDataInstance = new FormData(e.currentTarget);
     const rawRequestData = Object.fromEntries(formDataInstance.entries());
@@ -49,8 +53,10 @@ export default function CreateDonationRequest({ user }) {
     };
 
     const result = await createDonationRequest(finalizedDonationRequest);
+    setPending(false)
     if (result.insertedId) {
       toast.success("Request created successfully");
+      router.push(`/dashboard/${user?.role}/my-requests`);
       // Optionally reset states here
     }
   };
@@ -337,7 +343,7 @@ export default function CreateDonationRequest({ user }) {
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#b91c1c] hover:bg-[#991b1b] text-white px-8 py-3.5 rounded-xl font-semibold text-sm transition-all duration-200 shadow-lg shadow-red-900/10 active:scale-[0.98]"
             >
               <FiSend className="text-base" />
-              Submit Donation Request
+              {pending ? "prosessing":  "Submit Donation Request"}
             </button>
           </div>
         </form>

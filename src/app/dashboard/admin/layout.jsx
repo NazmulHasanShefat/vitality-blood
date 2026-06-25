@@ -4,6 +4,9 @@ import { getUserSession } from "@/lib/api/user";
 import { requireRole } from "@/lib/core/session";
 import React from "react";
 
+
+export const dynamic = "force-dynamic";
+
 const AdminLayout = async ({ children }) => {
   await requireRole("admin")
   const user = await getUserSession();

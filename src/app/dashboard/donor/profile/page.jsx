@@ -1,11 +1,13 @@
 import ProfileCard from '@/components/dashboard/profile/ProfileCard';
+import { getUserSession } from '@/lib/api/user';
 import React from 'react';
 
 
-const ProfilePage = () => {
+const ProfilePage = async () => {
+    const user = await getUserSession();
     return (
         <section>
-            <ProfileCard />
+            <ProfileCard user={user}/>
         </section>
     );
 };

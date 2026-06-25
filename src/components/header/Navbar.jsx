@@ -107,7 +107,7 @@ export default function Navbar() {
               type="button"
               className="p-1 text-gray-500 dark:text-gray-400"
             >
-              <FiBell className="text-xl text-[#2b6cb0] dark:text-[#63b3ed]" />
+              {/* <FiBell className="text-xl text-[#2b6cb0] dark:text-[#63b3ed]" /> */}
             </button>
             <button
               onClick={() => setIsOpen(!isOpen)}

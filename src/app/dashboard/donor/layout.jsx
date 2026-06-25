@@ -3,7 +3,7 @@ import Sidebar from "@/components/dashboard/Sidebar";
 import { getUserSession } from "@/lib/api/user";
 import { requireRole } from "@/lib/core/session";
 import React from "react";
-
+export const dynamic = "force-dynamic";
 const DonorDashboardlayout = async ({ children }) => {
   await requireRole("donor")
   const user = await getUserSession();
