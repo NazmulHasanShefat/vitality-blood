@@ -25,7 +25,7 @@ export default async function Success({ searchParams }) {
     expand: ['line_items', 'payment_intent']
   })
 
-  const { status, customer_details, payment_intent } = session
+  const { status, customer_details, payment_intent, metadata } = session
   const customerEmail = customer_details?.email || ''
 
   if (status === 'open') {
@@ -48,9 +48,9 @@ export default async function Success({ searchParams }) {
     const paymentMethodBrand = typeof payment_intent === 'object' 
       ? payment_intent?.payment_method_types?.[0] 
       : 'Card'
+      
 
-
-     const result = await createFundingHistory({customerEmail, transactionId, transactionAmount: amountTotal})
+     const result = await createFundingHistory({name: metadata?.customerName, customerEmail, transactionId, transactionAmount: amountTotal})
      console.log(result)
 
     return (

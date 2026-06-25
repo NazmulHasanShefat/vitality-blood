@@ -1,6 +1,6 @@
-import { stripe } from '@/lib/stripe'
+
+import { getTransactionHistory } from '@/lib/api/transaction'
 import Link from 'next/link'
-import { redirect } from 'next/navigation'
 import { 
   FiHeart, 
   FiDollarSign, 
@@ -21,10 +21,10 @@ async function getFundingHistory() {
 
 export default async function FundingPage() {
   const funds = await getFundingHistory()
-
+  const transactionHistory = await getTransactionHistory();
   // Calculate total funds for the dashboard summary banner
   const totalRaised = funds.reduce((acc, curr) => acc + curr.amount, 0).toFixed(2)
-
+  console.log(transactionHistory)
 
   return (
     <div className="min-h-screen bg-[#f8fafc] dark:bg-[#0b0f19] text-slate-800 dark:text-slate-100 p-4 sm:p-8 transition-colors duration-300">

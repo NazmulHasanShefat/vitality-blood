@@ -30,6 +30,7 @@ export async function POST(request) {
         },
       ],
       mode: "payment",
+      metadata: {customerName: user?.name},
       success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
     });
     return NextResponse.redirect(session.url, 303);

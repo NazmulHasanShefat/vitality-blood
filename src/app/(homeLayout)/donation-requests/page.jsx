@@ -9,13 +9,13 @@ const DRComponentWrapper = async ({searchParams}) => {
     const district = params?.district || "";
     const divition = params?.divition || "";
 
-    const allPedingBloodDonationRequests = await getPendingBloodDonationRequest(blood, divition, district);
+    const allPedingBloodDonationRequests =  getPendingBloodDonationRequest(blood, divition, district);
     const user = await getUserSession();
     return (
         <div>
-            <Suspense fallback={null}>
+     
                 <FindLifeSaver pedingRequests={allPedingBloodDonationRequests} user={user}/>
-            </Suspense>
+          
         </div>
     );
 };
