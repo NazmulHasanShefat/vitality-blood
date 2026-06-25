@@ -3,8 +3,11 @@
 import React from "react";
 import Image from "next/image";
 import { FiArrowRight, FiZap } from "react-icons/fi";
+import { authClient } from "@/lib/auth-client";
+import Link from "next/link";
 
 export default function Hero() {
+  const {data} = authClient.useSession();
   return (
     <section className="relative w-full bg-white text-[#0f172a] dark:bg-[#0b0f19] dark:text-[#f8fafc] transition-colors duration-300 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 lg:py-24">
@@ -31,20 +34,20 @@ export default function Hero() {
 
             {/* CTA Buttons */}
             <div className="flex flex-wrap items-center gap-4 pt-2">
-              <button
-                type="button"
+              <Link
+                href={data ? `/dashboard/${data?.user?.role}` : "/donation-requests"}
                 className="inline-flex items-center justify-center bg-[#b91c1c] hover:bg-[#991b1b] text-white px-6 py-3 rounded-xl font-medium text-sm sm:text-base shadow-lg shadow-red-600/10 hover:shadow-red-600/20 transition-all duration-200 group dark:bg-[#b91c1c] dark:hover:bg-[#a11818]"
               >
-                Explore Dashboard
+                {data ? "Explore Dashboard" : "Explore noew"}
                 <FiArrowRight className="ml-2 text-lg transition-transform duration-200 group-hover:translate-x-1" />
-              </button>
+              </Link>
 
-              <button
-                type="button"
+              <Link
+                href="/register"
                 className="inline-flex items-center justify-center bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-6 py-3 rounded-xl font-medium text-sm sm:text-base transition-all duration-200 dark:bg-transparent dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-900"
               >
-                Request Demo
-              </button>
+                Register As Donor
+              </Link>
             </div>
           </div>
 

@@ -14,7 +14,7 @@ export default function DashboardStats({ allStates, user }) {
 
 
   return (
-    <div className="w-full space-y-8 p-6 bg-slate-50 dark:bg-[#0b0f19] min-h-screen transition-colors duration-300">
+    <div className="w-full space-y-8 p-6 bg-slate-50 dark:bg-[#0b0f19] transition-colors duration-300">
       
       {/* ১. ওয়েলকাম সেকশন (আপনার ড্যাশবোর্ড হোম পেইজের স্টাইল অনুযায়ী) */}
       <div className="space-y-1">

@@ -2,8 +2,10 @@ import AllDonationRequestTable from '@/components/dashboard/all-donation-request
 import { getallDonationRequest } from '@/lib/api/donation';
 import React from 'react';
 
-const page = async () => {
-    const donorRequests = await getallDonationRequest();
+const page = async ({searchParams}) => {
+    const params = await searchParams;
+    const filter = params?.filter || "";
+    const donorRequests = await getallDonationRequest(filter);
     return (
         <div>
            <AllDonationRequestTable donorRequests={donorRequests} />

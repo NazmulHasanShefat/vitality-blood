@@ -104,19 +104,7 @@ export default function DonationForm() {
           )}
         </div>
 
-        {/* পার্সোনাল ডিটেইলস ইনপুট */}
-        <div className="space-y-4 pt-2">
-          <div>
-            <label className="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">
-              Full Name (Optional)
-            </label>
-            <input
-              type="text"
-              placeholder="John Doe"
-              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-[#1e293b]/40 text-gray-800 dark:text-slate-100 text-sm focus:ring-2 focus:ring-red-500/20 focus:border-[#b91c1c] outline-none transition"
-            />
-          </div>
-        </div>
+     
 
         {/* সাবমিট বাটন */}
         <button

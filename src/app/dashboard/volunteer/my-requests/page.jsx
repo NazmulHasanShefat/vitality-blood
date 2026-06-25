@@ -8,7 +8,7 @@ const page = async () => {
     const donorRequests = await getDonorDonationRequests(user?.id);
     return (
         <div>
-            my all requests
+          
             <DonationRequestTable donorRequests={donorRequests} />
         </div>
     );

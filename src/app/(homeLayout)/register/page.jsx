@@ -1,9 +1,10 @@
 import RegisterForm from "./RegisterForm";
 
-
+export const metadata = {
+  title: "Vitality Blood - regiter",
+  description: "A blood donation platform",
+};
 export default function Register() {
-
-
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#0b0f19] text-[#0f172a] dark:text-[#f8fafc] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
       <div className="max-w-2xl w-full bg-white dark:bg-[#111827] p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800">

@@ -62,7 +62,7 @@ export default async function FundingPage() {
           <div className="p-5 border-b border-slate-100 dark:border-slate-800/60 flex items-center justify-between">
             <h3 className="font-bold text-slate-900 dark:text-white text-sm">Recent Contributions</h3>
             <span className="text-xs px-2.5 py-1 rounded-full font-medium bg-slate-50 dark:bg-slate-800 text-slate-400">
-              {funds.length} Donations Recorded
+              {transactionHistory.length} Donations Recorded
             </span>
           </div>
 
@@ -76,16 +76,16 @@ export default async function FundingPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 dark:divide-slate-800/40">
-                {funds.map((fund) => (
-                  <tr key={fund.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/20 transition-colors">
+                {transactionHistory.map((fund) => (
+                  <tr key={fund?._id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/20 transition-colors">
                     <td className="p-4 text-sm font-semibold text-slate-800 dark:text-slate-200">
                       {fund.name}
                     </td>
                     <td className="p-4 text-sm font-bold text-emerald-500 dark:text-emerald-400">
-                      {fund.currency}{fund.amount.toFixed(2)}
+                      {Number(fund.transactionAmount).toFixed(0)}
                     </td>
                     <td className="p-4 text-xs font-medium text-slate-400 dark:text-slate-500">
-                      {fund.date}
+                      {fund.createdAt}
                     </td>
                   </tr>
                 ))}

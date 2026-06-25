@@ -6,7 +6,7 @@ const page = async () => {
     const user = await getUserSession();
     return (
         <div>
-            createRequestform
+      
            <CreateDonationRequest user={user}/>
         </div>
     );

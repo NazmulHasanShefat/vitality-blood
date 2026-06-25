@@ -105,7 +105,7 @@ const RegisterForm = () => {
 
     console.log(result);
     if (!result.success) {
-      console.log(result);
+      toast.danger(result.message)
     }
     if (result.success) {
       toast.success("regiterd successfully");
