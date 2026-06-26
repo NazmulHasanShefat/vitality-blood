@@ -24,7 +24,6 @@ export default function Navbar() {
       ];
     } else {
       return [
-        { name: "Search Donor", href: "/searchdonor" },
         { name: "Donation Requiest", href: "/donation-requests" },
         { name: "Funding", href: "/funding" },
         { name: "Home", href: "/" },
