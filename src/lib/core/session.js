@@ -28,7 +28,7 @@ export const checkUserStatus = async()=>{
   const dbuser = await protectedFetch(`/api/check-user/${user?.id}`);
   
   if(dbuser?.status === "blocked"){
-    return redirect("/un-authorized")
+    return redirect("/blocked")
   }else{
     return;
   }
