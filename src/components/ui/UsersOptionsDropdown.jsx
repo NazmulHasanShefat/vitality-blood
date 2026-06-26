@@ -9,17 +9,18 @@ import { useRouter } from "next/navigation";
 
 export function UsersOptionsDropDown({ user }) {
   const router = useRouter();
-
   const setRole = async (userid, role) => {
     const { data, error } = await authClient.admin.setRole({
       userId: userid,
       role: role, // required
     });
+
     if (error) {
       console.log(error);
       toast.danger(error.message);
     }
     if (data) {
+    
       router.refresh();
       toast.success("user updated successfully");
     }
@@ -29,6 +30,7 @@ export function UsersOptionsDropDown({ user }) {
       userId: userId, // required
       data: { status: status }, // required
     });
+
     if (error) {
       console.log(error);
       toast.danger(error.message);
@@ -50,10 +52,10 @@ export function UsersOptionsDropDown({ user }) {
       return setRole(user?.id, "admin");
     }
     if (actionName === "block") {
-      return updateCurrentUser(user?.id, "blocked")
+      return updateCurrentUser(user?.id, "blocked");
     }
-    if(actionName === "active"){
-      return updateCurrentUser(user?.id, "active")
+    if (actionName === "active") {
+      return updateCurrentUser(user?.id, "active");
     }
   };
 
@@ -69,28 +71,27 @@ export function UsersOptionsDropDown({ user }) {
             View details
           </Dropdown.Item>
           {user?.status !== "blocked" && (
-          <Dropdown.Item
-            id="block-user"
-            textValue="block-user"
-            className="text-red-600"
-             onClick={() => handleAction("block")}
-          >
-            <FiEdit2 className="text-sm" />
-            Block user
-          </Dropdown.Item>
+            <Dropdown.Item
+              id="block-user"
+              textValue="block-user"
+              className="text-red-600"
+              onClick={() => handleAction("block")}
+            >
+              <FiEdit2 className="text-sm" />
+              Block user
+            </Dropdown.Item>
           )}
           {user?.status !== "active" && (
-          <Dropdown.Item
-            id="active-user"
-            textValue="active-user"
-            className="text-green-600"
-             onClick={() => handleAction("active")}
-          >
-            <FiEdit2 className="text-sm" />
-            active user
-          </Dropdown.Item>
+            <Dropdown.Item
+              id="active-user"
+              textValue="active-user"
+              className="text-green-600"
+              onClick={() => handleAction("active")}
+            >
+              <FiEdit2 className="text-sm" />
+              active user
+            </Dropdown.Item>
           )}
-
 
           {user?.role !== "admin" && (
             <Dropdown.Item

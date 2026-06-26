@@ -5,6 +5,7 @@ import { getFilterDonorDonationRequest } from "@/lib/api/donation";
 
 import DonationRequestTable from "@/components/dashboard/my-requests-table/MyRequestsTable";
 import BloodLoadingSpinner from "@/components/ui/Loading";
+import AllPagination from "@/components/ui/AllPagination";
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const page = async ({ searchParams }) => {
   const params = await searchParams;
@@ -24,6 +25,7 @@ const page = async ({ searchParams }) => {
       <Suspense fallback={<BloodLoadingSpinner />}>
         <DonationRequestTable donorRequests={donorRequests} user={user} />
       </Suspense>
+      <AllPagination totalPage={donorRequests?.pagination?.totalPages}/>
     </div>
   );
 };

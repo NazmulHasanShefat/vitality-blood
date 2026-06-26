@@ -11,6 +11,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const { data } = authClient.useSession();
+ 
 
   // Navigation Links
 

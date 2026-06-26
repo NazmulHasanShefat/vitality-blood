@@ -9,9 +9,9 @@ const page = async ({searchParams}) => {
     const page = params.page || 1;
     const users = await getListUsers();
     const ShowLinitUser = await getListUsersWithPaginate(page);
-    console.log(ShowLinitUser)
+
     const newLimitUsers = ShowLinitUser?.data
-    console.log(users)
+  
     return (
         <div>
             <UsersTable usersData={newLimitUsers}/>

@@ -1,18 +1,19 @@
 "use server";
 
+import { getUserSession } from "../api/user";
 import { getuserToken } from "./session";
-import { headers } from 'next/headers';
 
 const baseUrl = process.env.BACKEND_BASE_URL;
 
 export const authHeader = async () => {
+  const user = await getUserSession();
   try {
     const token = await getuserToken();
     const header = {
       authorization: `Bearer ${token}`,
+      userstatus: `${user?.status}`,
     };
     return token ? header : {};
-
   } catch (error) {
     console.log(error);
   }
@@ -28,7 +29,7 @@ export const serverMutaion = async (
       method: actionMethod,
       headers: {
         "Content-Type": "application/json",
-        ... await authHeader(),
+        ...(await authHeader()),
       },
       body: JSON.stringify(formData),
     });
