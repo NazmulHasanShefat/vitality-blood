@@ -16,6 +16,7 @@ import {
 } from "react-icons/fi";
 import { HiOutlineLogout } from "react-icons/hi";
 import { FaRegUser } from "react-icons/fa";
+import SignOut from "../ui/SignOut";
 
 export default function Sidebar({ user }) {
   const pathname = usePathname(); // অ্যাক্টিভ রুট ট্র্যাক করার জন্য (Next.js এনভায়রনমেন্ট)
@@ -149,27 +150,7 @@ export default function Sidebar({ user }) {
         {/* ছবির মডার্ন সেপারেটর বা হালকা থিন লাইন */}
         <div className="border-t border-gray-100 dark:border-gray-800 my-2 w-full" />
 
-        {bottomItems.map((item) => {
-          const IconComponent = item.icon;
-          return item.type === "link" ? (
-            <Link
-              key={item.name}
-              href={item.href}
-              className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-semibold text-gray-500 hover:bg-gray-50 hover:text-gray-800 dark:text-gray-400 dark:hover:bg-slate-800/60 dark:hover:text-slate-200 transition-all duration-200"
-            >
-              <IconComponent className="text-lg text-gray-400 dark:text-gray-500" />
-              <span>{item.name}</span>
-            </Link>
-          ) : (
-            <button
-              key={item.name}
-              className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-semibold text-gray-500 hover:bg-gray-50 hover:text-gray-800 dark:text-gray-400 dark:hover:bg-slate-800/60 dark:hover:text-slate-200 transition-all duration-200"
-            >
-              <IconComponent className="text-lg text-gray-400 dark:text-gray-500" />
-              <span>{item.name}</span>
-            </button>
-          );
-        })}
+        <SignOut />
       </div>
     </aside>
   );

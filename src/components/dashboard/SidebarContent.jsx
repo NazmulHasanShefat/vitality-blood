@@ -15,6 +15,7 @@ import {
 import { FiGrid, FiUsers } from "react-icons/fi";
 import { FaRegUser } from "react-icons/fa";
 import { usePathname, useRouter } from "next/navigation";
+import SignOut from "../ui/SignOut";
 
 export default function SidebarContent({ onClose, user }) {
   const pathName = usePathname();
@@ -75,7 +76,7 @@ export default function SidebarContent({ onClose, user }) {
       <div className="px-4">
         <Button className="w-full justify-center gap-2 rounded-xl bg-[#b91c1c] font-semibold text-white transition-all duration-200 hover:bg-[#991b1b] shadow-md shadow-red-900/10 active:scale-[0.98] dark:bg-[#b91c1c] dark:hover:bg-[#a11818]">
     
-         {user?.name}
+         {user?.role}
         </Button>
       </div>
 
@@ -103,17 +104,7 @@ export default function SidebarContent({ onClose, user }) {
       <div className="px-3 pb-5">
         <div className="border-t border-gray-100 dark:border-gray-800 my-2 mx-2 w-auto" />
         <div className="space-y-1">
-          {FOOTER_ITEMS.map(({ key, label, href, icon: Icon }) => (
-            <Link
-              key={key}
-              href={href}
-              onClick={onClose} // ফুটার লিংকেও ক্লোজ ফাংশন যুক্ত করা হলো
-              className="flex w-full items-center gap-3 rounded-xl px-4 py-2 text-sm font-semibold text-gray-500 hover:bg-gray-50"
-            >
-              <Icon />
-              <span>{label}</span>
-            </Link>
-          ))}
+         <SignOut />
         </div>
       </div>
     </div>

@@ -3,6 +3,7 @@ import Image from "next/image";
 import { FiSearch, FiBell, FiHelpCircle, FiAlertTriangle } from "react-icons/fi";
 import VitalityBloodDrawer from "./SideDrower";
 import { getUserSession } from "@/lib/api/user";
+import SignOut from "../ui/SignOut";
 
 export default async function DashboardNavbar() {
  const user = await getUserSession();
@@ -26,25 +27,9 @@ export default async function DashboardNavbar() {
         
      
 
-        {/* নোটিফিকেশন আইকন (লাল ডট বা অ্যালার্ট নোটিশ সহ) */}
-        <button 
-          type="button" 
-          className="relative p-2 text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-slate-200 focus:outline-none transition"
-          aria-label="View notifications"
-        >
-          <FiBell className="text-xl" />
-          {/* নোটিফিকেশন রেড ডট */}
-          <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-red-600 border border-white dark:border-[#111827]" />
-        </button>
+       
 
-        {/* হেল্প/সাপোর্ট আইকন */}
-        <button 
-          type="button" 
-          className="p-2 text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-slate-200 focus:outline-none transition"
-          aria-label="Get help"
-        >
-          <FiHelpCircle className="text-xl" />
-        </button>
+    
 
         {/* থিন লাইট ভার্টিকাল সেপারেটর লাইন */}
         <div className="h-8 w-px bg-gray-200 dark:bg-gray-800 hidden sm:block" />
@@ -59,6 +44,7 @@ export default async function DashboardNavbar() {
               {user?.email}
             </span>
           </div>
+
           
        
           <div className="relative h-10 w-10 rounded-full border-2 border-[#b91c1c] overflow-hidden shadow-sm">
@@ -71,6 +57,7 @@ export default async function DashboardNavbar() {
             />
           </div>
         </div>
+  
 
       </div>
 
